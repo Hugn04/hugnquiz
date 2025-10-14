@@ -1,0 +1,21 @@
+.wraper {
+    //transition: all ease 0.5s;
+    background-color: var(--background-color);
+    width: 100%;
+    .button {
+        margin: 0;
+    }
+}
+
+.button {
+    display: flex;
+    width: 100%;
+    color: currentColor;
+    border-radius: 0;
+    &.spacer {
+        border-bottom: 1px solid var(--color-disable);
+    }
+    &.active {
+        background-color: var(--theme-color);
+    }
+}

@@ -1,0 +1,88 @@
+.wraper {
+    * {
+        transition: none;
+    }
+    color: var(--text-color);
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    height: 36px;
+    padding: 6px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    user-select: none;
+    &.userselect {
+        user-select: auto;
+    }
+    + .wraper {
+        margin-left: 14px;
+    }
+    &:hover {
+        filter: brightness(0.9);
+    }
+}
+
+.icon + .title,
+.title + .icon {
+    margin-left: 8px;
+}
+
+.icon {
+    min-width: 20px;
+    text-align: center;
+}
+.icon-single {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    margin-left: 0;
+    border-radius: 50%;
+    justify-content: center;
+    &:hover {
+        background-color: var(--color-disable);
+    }
+}
+.primary {
+    background-color: var(--primary);
+    color: rgb(255, 255, 255);
+    &.disable {
+        background-color: var(--color-disable);
+    }
+    &:hover {
+        // background-color: rgb(7, 100, 154);
+        background-color: rgb(255, 127, 72);
+    }
+}
+
+.outline {
+    border: 1px solid var(--primary);
+    color: var(--primary);
+}
+
+.white {
+    &:hover {
+        color: var(--primary);
+        box-shadow: var(--box-shadow);
+    }
+}
+.danger {
+    background-color: red;
+    color: rgb(255, 255, 255);
+    &.disable {
+        background-color: var(--color-disable);
+    }
+}
+.small {
+    height: 30px;
+    padding: 6px 16px;
+}
+.large {
+    height: 40px;
+    padding: 8px 20px;
+}
+
+.disable {
+    //background-color: var(--color-disable);
+    pointer-events: none;
+}

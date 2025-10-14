@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+:root {
+    // --primary: rgb(10, 143, 220);
+    --primary: rgb(255, 127, 72);
+    --text-color: rgb(17, 24, 39);
+    --color-disable: rgba(0, 0, 0, 0.12);
+    --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --background-color: rgb(255, 255, 255);
+    --theme-color: rgb(233, 233, 233); // #f8f4fc;
+}
+.theme-dark {
+    //--primary: rgb(0, 0, 0); // rgb(10, 143, 220);
+    --text-color: rgb(255, 255, 255);
+    --color-disable: #e0e0e0; // rgb(31, 37, 39);
+    --box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.1), 0 2px 4px -1px rgba(255, 255, 255, 0.06);
+    --background-color: rgb(43, 49, 55); // rgb(31, 37, 39);
+    --theme-color: rgb(31, 37, 39);
+}
+.tippy-box {
+    background-color: var(--text-color) !important;
+    color: var(--background-color) !important;
+    border-radius: 8px !important;
+}
+.tippy-arrow {
+    color: var(--text-color) !important; /* Màu mũi tên */
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 1.6rem;
+    text-decoration: none;
+}
+
+html {
+    font-size: 62.5%;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings: 'slnt' 0;
+}
+
+body {
+    background-color: var(--theme-color);
+    font-family: 'Inter', sans-serif;
+}
+
+input {
+    border: none;
+    outline: none;
+}
+a {
+    color: var(--text-color);
+}
+h1 {
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+.popup-content {
+    max-width: 90%;
+    padding: 16px;
+    border-radius: 5px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.Toastify__toast-container {
+    position: fixed;
+    top: 70px;
+}
+@media only screen and (max-width: 600px) {
+    .popup-content {
+        width: 100%;
+    }
+}
+html * {
+    transition: background-color ease 0.5s;
+}
+html *::-webkit-scrollbar {
+    border-radius: 0;
+    width: 8px;
+}
+html *::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+html *::-webkit-scrollbar-track {
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
+}

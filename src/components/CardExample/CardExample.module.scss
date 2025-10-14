@@ -1,0 +1,223 @@
+.wraper {
+    background-color: var(--background-color);
+    width: 310px;
+    // aspect-ratio: 310 / 378;
+    // height: 378px;
+    padding: 16px 0;
+    margin: 16px;
+    color: var(--text-color);
+    border: 1px solid var(--color-disable);
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: var(--box-shadow); //rgba(0, 0, 0, 0.04) 0px 10px 10px 4px;
+    will-change: transform;
+
+    .img {
+        margin-bottom: 4px;
+        width: 100%;
+        height: 172px;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+    transition: transform 0.5s ease, background-color 0.3s linear;
+
+    &:hover {
+        transform: translateY(-8px);
+    }
+}
+
+//Empty card
+.empty {
+    padding: 16px 8px;
+    div {
+        position: relative;
+        overflow: hidden;
+        background-color: #d9d9d9;
+    }
+    .img {
+        width: 100%;
+        height: 150px;
+        margin-bottom: 8px;
+    }
+    .title {
+        width: 200px;
+        height: 20px;
+    }
+    .info {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        background-color: transparent;
+        > div {
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+        }
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        .name {
+            width: 100px;
+            height: 16px;
+        }
+        .date {
+            width: 80px;
+            height: 16px;
+            background-color: #d9d9d9;
+        }
+    }
+    .line {
+        width: 100%;
+        height: 16px;
+
+        margin-bottom: 12px;
+    }
+    .button {
+        border-radius: 16px;
+        width: 150px;
+        height: 40px;
+
+        margin-bottom: 8px;
+    }
+}
+.empty .avatar,
+.empty .name,
+.empty .title,
+.empty .date,
+.empty .img,
+.empty .button,
+.line {
+    &::before {
+        position: absolute;
+        content: '';
+        height: 100%;
+        width: 100%;
+        background-image: linear-gradient(to right, #d9d9d9 0%, rgba(0, 0, 0, 0.05) 20%, #d9d9d9 40%, #d9d9d9 100%);
+        background-repeat: no-repeat;
+        background-size: 450px 400px;
+        animation: shimmer 1s linear infinite;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -450px 0;
+    }
+    100% {
+        background-position: 450px 0;
+    }
+}
+
+//Not Empty
+.title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    padding: 0 16px;
+}
+.example-info {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    margin-bottom: 6px;
+}
+.info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .avatar {
+        margin-right: 5px;
+    }
+    .name {
+        font-size: 1.4rem;
+    }
+}
+.date {
+    display: flex;
+    align-items: center;
+    p {
+        font-size: 1.4rem;
+    }
+    svg {
+        margin-right: 6px;
+        font-size: 1.4rem;
+    }
+}
+.statistics {
+    margin-bottom: 4px;
+    display: flex;
+    padding: 0 16px;
+    * {
+        font-size: 1.4rem;
+    }
+    div {
+        display: flex;
+        margin-right: 10px;
+    }
+    p {
+        margin-left: 8px;
+    }
+}
+
+.tag {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    margin-bottom: 8px;
+    padding: 0 16px;
+    .tag-button {
+        padding: 3px 6px;
+        height: 26px;
+        max-width: 120px;
+        * {
+            font-size: 1.2rem;
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+}
+
+.action-crud {
+    display: flex;
+    padding: 0 16px;
+    margin-bottom: 8px;
+    height: 30px;
+    font-size: 1rem;
+    * {
+        font-size: 1.8rem;
+    }
+}
+
+.action {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    height: auto;
+
+    .play {
+        padding: 4px 10px;
+        * {
+            font-size: 1.2rem;
+        }
+    }
+    div {
+        display: flex;
+    }
+}
