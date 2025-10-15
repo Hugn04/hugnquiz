@@ -54,7 +54,7 @@ function ItemRank({ rank = 1, point = 0, userId, userInfo, children }: ItemRankP
                     className={cx('button')}
                 ></Button>
             ) : (
-                <Button disable icon={null} className={cx('button')}></Button>
+                <Button disable className={cx('button')}></Button>
             )}
         </div>
     );

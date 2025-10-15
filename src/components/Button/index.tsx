@@ -1,106 +1,171 @@
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { forwardRef, memo, type ReactNode, type MouseEventHandler } from 'react';
+import type { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { forwardRef, memo, useEffect, type ReactNode } from 'react';
 
 import styles from './Button.module.scss';
+import type { InputRef } from '../Input';
 const cx = classNames.bind(styles);
 
-// Type cho các input ref trong validateInput
 export interface ValidateInputRef {
-    current: {
-        validate: (showError?: boolean) => boolean;
-    };
+    current: InputRef | null;
 }
-
-export interface ButtonProps {
+export interface BaseButtonProps {
     children?: ReactNode;
     className?: string;
-    primary?: boolean;
-    outline?: boolean;
-    icon?: any; // FontAwesomeIconProp
-    leftIcon?: any;
-    rightIcon?: any;
-    white?: boolean;
-    danger?: boolean;
-    small?: boolean;
-    large?: boolean;
+    icon?: IconProp;
+    leftIcon?: IconProp;
+    rightIcon?: IconProp;
     iconColor?: string;
     to?: string;
     href?: string;
     disable?: boolean;
     userselect?: boolean;
+    variant?: 'primary' | 'outline' | 'white' | 'danger' | 'link';
+    size?: 'small' | 'large';
     validateInput?: ValidateInputRef[];
-    onClick?: MouseEventHandler<HTMLElement>;
-    [key: string]: any; // các props khác
+    onClick?: () => void;
 }
 
-const Button = forwardRef<HTMLElement, ButtonProps>((props, ref) => {
+type ButtonAsLink = BaseButtonProps & {
+    to: string;
+    href?: never;
+} & React.AnchorHTMLAttributes<HTMLAnchorElement>;
+
+// --- Kiểu cho thẻ a (liên kết ngoài)
+type ButtonAsAnchor = BaseButtonProps & {
+    href: string;
+    to?: never;
+} & React.AnchorHTMLAttributes<HTMLAnchorElement>;
+type ButtonAsButton = BaseButtonProps &
+    React.ButtonHTMLAttributes<HTMLButtonElement> & {
+        to?: never;
+        href?: never;
+    };
+type ButtonProps = ButtonAsButton | ButtonAsLink | ButtonAsAnchor;
+const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((props, ref) => {
     const {
         validateInput,
         leftIcon,
         rightIcon,
         className,
-        primary,
-        outline,
-        icon,
-        white,
-        danger,
-        small,
-        large,
-        iconColor,
-        to,
         onClick = () => {},
+        to,
         href,
+        icon,
+        iconColor,
         disable,
         userselect,
+        variant,
+        size,
         children,
         ...rest
     } = props;
 
-    const classes = cx('wraper', className, {
-        primary,
-        outline,
-        'icon-single': icon,
-        white,
-        danger,
-        small,
-        large,
-        disable,
-        userselect,
-    });
+    const classes = cx(
+        'wraper',
+        className,
+        variant ? { [variant]: true } : undefined,
+        size ? { [size]: true } : undefined,
+        {
+            disable,
+            userselect,
+            'icon-single': icon,
+        },
+    );
 
-    let Component: any = 'button';
-    let _props: any = { onClick };
-
-    if (disable) {
-        _props = {};
-    }
-
-    if (to) {
-        Component = Link;
-        _props.to = to;
-    } else if (href) {
-        Component = 'a';
-        _props.href = href;
-    }
+    let fnClick = onClick;
 
     const handleValidateInput = (inputs: ValidateInputRef[]) => {
-        const tempEvent = _props.onClick;
-        _props.onClick = () => {
-            const error = inputs.map((input) => input.current.validate(true));
-            if (error.every((element) => element)) {
-                tempEvent();
+        const tempEvent = onClick;
+        fnClick = () => {
+            const error = inputs.map((input) => input?.current?.validate(true));
+
+            if (error.every((element) => typeof element !== 'string')) {
+                if (tempEvent) tempEvent();
             }
         };
     };
-
-    if (validateInput) {
-        handleValidateInput(validateInput);
+    useEffect(() => {
+        if (validateInput) {
+            handleValidateInput(validateInput);
+        }
+    }, []);
+    if ('to' in props && to) {
+        return (
+            <Link
+                ref={ref as React.Ref<HTMLAnchorElement>}
+                to={props.to}
+                onClick={() => {
+                    fnClick();
+                }}
+                className={classes}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                {...(rest as any)}
+            >
+                {icon ? (
+                    <FontAwesomeIcon icon={icon} color={iconColor} />
+                ) : (
+                    <>
+                        {leftIcon && (
+                            <div className={cx('icon')}>
+                                <FontAwesomeIcon icon={leftIcon} />
+                            </div>
+                        )}
+                        <span className={cx('title')}>{children}</span>
+                        {rightIcon && (
+                            <div className={cx('icon')}>
+                                <FontAwesomeIcon icon={rightIcon} />
+                            </div>
+                        )}
+                    </>
+                )}
+            </Link>
+        );
     }
-
+    if ('href' in props && href) {
+        return (
+            <a
+                ref={ref as React.Ref<HTMLAnchorElement>}
+                href={props.href}
+                onClick={() => {
+                    fnClick();
+                }}
+                className={classes}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                {...(rest as any)}
+            >
+                {icon ? (
+                    <FontAwesomeIcon icon={icon} color={iconColor} />
+                ) : (
+                    <>
+                        {leftIcon && (
+                            <div className={cx('icon')}>
+                                <FontAwesomeIcon icon={leftIcon} />
+                            </div>
+                        )}
+                        <span className={cx('title')}>{children}</span>
+                        {rightIcon && (
+                            <div className={cx('icon')}>
+                                <FontAwesomeIcon icon={rightIcon} />
+                            </div>
+                        )}
+                    </>
+                )}
+            </a>
+        );
+    }
     return (
-        <Component ref={ref} className={classes} disabled={!!disable} {..._props} {...rest}>
+        <button
+            ref={ref as React.Ref<HTMLButtonElement>}
+            onClick={() => {
+                fnClick();
+            }}
+            className={classes}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            {...(rest as any)}
+        >
             {icon ? (
                 <FontAwesomeIcon icon={icon} color={iconColor} />
             ) : (
@@ -118,8 +183,28 @@ const Button = forwardRef<HTMLElement, ButtonProps>((props, ref) => {
                     )}
                 </>
             )}
-        </Component>
+        </button>
     );
+
+    // <Component ref={ref} className={classes} disabled={!!disable} {..._props} {...rest}>
+    // {icon ? (
+    //     <FontAwesomeIcon icon={icon} color={iconColor} />
+    // ) : (
+    //     <>
+    //         {leftIcon && (
+    //             <div className={cx('icon')}>
+    //                 <FontAwesomeIcon icon={leftIcon} />
+    //             </div>
+    //         )}
+    //         <span className={cx('title')}>{children}</span>
+    //         {rightIcon && (
+    //             <div className={cx('icon')}>
+    //                 <FontAwesomeIcon icon={rightIcon} />
+    //             </div>
+    //         )}
+    //     </>
+    // )}
+    // </Component>
 });
 
 export default memo(Button);

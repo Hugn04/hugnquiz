@@ -73,6 +73,13 @@
         background-color: var(--color-disable);
     }
 }
+.link {
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+    &:hover {
+        color: #0056b3; /* Màu chữ khi hover (xanh đậm hơn) */
+        text-decoration: underline; /* Hiện gạch chân khi hover */
+    }
+}
 .small {
     height: 30px;
     padding: 6px 16px;

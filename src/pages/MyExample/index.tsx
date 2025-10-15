@@ -70,7 +70,7 @@ function MyExample() {
                 })}
                 <div className={cx('page')}>
                     <Button
-                        primary
+                        variant="primary"
                         disable={!page.prevPageUrl}
                         onClick={() => {
                             getExample(page.prevPageUrl ?? '');
@@ -83,7 +83,7 @@ function MyExample() {
                             return (
                                 <Button
                                     disable={page.active || page.label === '...'}
-                                    primary
+                                    variant="primary"
                                     key={index}
                                     onClick={() => {
                                         getExample(page.url ?? '');
@@ -95,7 +95,7 @@ function MyExample() {
                         })}
                     </div>
                     <Button
-                        primary
+                        variant="primary"
                         disable={!page.nextPageUrl}
                         onClick={() => {
                             getExample(page.nextPageUrl ?? '');

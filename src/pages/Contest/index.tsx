@@ -302,7 +302,7 @@ function Contest() {
                     {/* <Button className={cx('button')}>1</Button> */}
                 </div>
                 <div className={cx('retry')}>
-                    <Button onClick={retryExampleFalse} primary>
+                    <Button onClick={retryExampleFalse} variant="primary">
                         Làm lại câu sai
                     </Button>
                 </div>

@@ -80,7 +80,7 @@ function CardContest({ className }: CardContestProps) {
                 <Button
                     onClick={() => handleChangeQuestion('prev')}
                     disable={curentPart === 0 && currentQuestion === 0}
-                    primary
+                    variant="primary"
                     leftIcon={faCircleArrowLeft}
                 >
                     Trước
@@ -91,7 +91,7 @@ function CardContest({ className }: CardContestProps) {
                         curentPart === partQuestions.length - 1 &&
                         currentQuestion === partQuestions[curentPart].questions.length - 1
                     }
-                    primary
+                    variant="primary"
                     rightIcon={faCircleArrowRight}
                 >
                     Sau

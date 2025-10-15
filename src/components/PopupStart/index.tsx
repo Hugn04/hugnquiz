@@ -72,7 +72,7 @@ function PopupStart({ trigger, idExample = 0 }: PopupStartProps) {
                         });
                     }}
                     className={cx('start-example')}
-                    primary
+                    variant="primary"
                 >
                     Bắt đầu vào thi
                 </Button>

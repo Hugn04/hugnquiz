@@ -1,4 +1,4 @@
-// import Account from '../layout/Account';
+import Account from '../layout/Account';
 import HomeLayout from '../layout/Home';
 import { routes as routesConfig } from '../config';
 
@@ -6,10 +6,10 @@ import HomePage from '../pages/Home';
 import ExamQuestions from '../pages/ExamQuestions';
 import MyExample from '../pages/MyExample';
 import Contest from '../pages/Contest';
-// import Login from '../pages/Login';
+import Login from '../pages/Login';
 // import CreateExample from '../pages/CreateExample';
-// import Register from '../pages/Register';
-// import TestComponent from '../pages/TestComponent';
+import Register from '../pages/Register';
+import TestComponent from '../pages/TestComponent';
 // import VerifyEmail from '../pages/VerifyEmail';
 // import EditExample from '../pages/EditExample';
 // import Profile from '../pages/Profile';
@@ -32,11 +32,11 @@ export type RouteType = {
 
 const publicRoutes: RouteType[] = [
     { path: routesConfig.home, component: HomePage, layout: HomeLayout },
-    // { path: routesConfig.login, component: Login, layout: Account },
-    // { path: routesConfig.register, component: Register, layout: Account },
+    { path: routesConfig.login, component: Login, layout: Account },
+    { path: routesConfig.register, component: Register, layout: Account },
     // { path: routesConfig.verifyEmail, component: VerifyEmail, layout: Account },
     { path: routesConfig.exam, component: ExamQuestions, props: { searchMobile: true } },
-    // { path: routesConfig.test, component: TestComponent },
+    { path: routesConfig.test, component: TestComponent, layout: null },
     // { path: routesConfig.share, component: ShareExample },
 ];
 

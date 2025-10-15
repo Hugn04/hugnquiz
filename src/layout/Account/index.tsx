@@ -4,10 +4,13 @@ import styles from './Account.module.scss';
 import images from '../../assets/images';
 import { routes } from '../../config';
 import { useAuth } from '../../hooks/useAuth';
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
-function Account({ children }) {
+type AccountProps = {
+    children: ReactNode;
+};
+function Account({ children }: AccountProps) {
     const { user } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -25,7 +28,7 @@ function Account({ children }) {
                         <Button to={routes.home} className={cx('btn-home')}>
                             <div className={cx('core')}>
                                 <img className={cx('logo')} src={images.logo} alt="logo"></img>
-                                <h1>{process.env.REACT_APP_NAME}</h1>
+                                <h1>{import.meta.env.VITE_APP_NAME}</h1>
                             </div>
                         </Button>
                     </div>

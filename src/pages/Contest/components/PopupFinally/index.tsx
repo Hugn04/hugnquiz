@@ -129,7 +129,7 @@ function PopupFinally({
                 </div>
                 <div className={cx('action')}>
                     <Button
-                        primary
+                        variant="primary"
                         // onClick={() => {
                         //     const content = document.querySelector('.' + cx('word_example')).innerHTML;
                         //     downloadDocx(content);
@@ -137,13 +137,13 @@ function PopupFinally({
                     >
                         Tải đề thi
                     </Button>
-                    <Button primary onClick={handleRetryExample}>
+                    <Button variant="primary" onClick={handleRetryExample}>
                         Làm lại câu sai
                     </Button>
-                    <Button primary onClick={handleRetry}>
+                    <Button variant="primary" onClick={handleRetry}>
                         Làm lại bài thi
                     </Button>
-                    <Button primary to={routes.exam} style={{ background: 'red' }}>
+                    <Button variant="primary" to={routes.exam} style={{ background: 'red' }}>
                         Thoát
                     </Button>
                 </div>

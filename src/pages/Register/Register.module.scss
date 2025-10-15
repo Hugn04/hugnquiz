@@ -1,0 +1,34 @@
+.login-wraper {
+    margin-top: 6px;
+    padding: 0 16px;
+}
+.btn-login {
+    justify-content: center;
+    width: 100%;
+    height: 48px;
+    * {
+        font-size: 20px;
+        font-weight: 700;
+    }
+}
+
+.forgot-pwr {
+    text-align: center;
+    margin-top: 16px;
+}
+.register-wraper {
+    display: flex;
+    justify-content: center;
+    padding: 6px 0 0;
+}
+.btn-register {
+    height: 48px;
+    background-color: #42b72a;
+    &:hover {
+        background-color: #36a420;
+    }
+    * {
+        font-size: 1.7rem;
+        font-weight: 600;
+    }
+}

@@ -95,7 +95,7 @@ function ExamQuestions() {
 
             <div className={cx('page')}>
                 <Button
-                    primary
+                    variant="primary"
                     disable={!page.prevPageUrl}
                     onClick={() => {
                         handleChoosePage(page.prevPageUrl ?? '');
@@ -108,7 +108,7 @@ function ExamQuestions() {
                         return (
                             <Button
                                 disable={item.active || item.label === '...'}
-                                primary
+                                variant="primary"
                                 key={index}
                                 onClick={() => {
                                     handleChoosePage(item.url ?? '');
@@ -120,7 +120,7 @@ function ExamQuestions() {
                     })}
                 </div>
                 <Button
-                    primary
+                    variant="primary"
                     disable={!page.nextPageUrl}
                     onClick={() => {
                         handleChoosePage(page.nextPageUrl ?? '');

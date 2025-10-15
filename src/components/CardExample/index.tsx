@@ -119,10 +119,10 @@ function CardExample({ getExample = () => {}, className, myExample, example }: C
                 </div> */}
             </div>
             <div className={cx('tag')}>
-                <Button outline className={cx('tag-button')}>
+                <Button variant="outline" className={cx('tag-button')}>
                     {example.credits} tín chỉ
                 </Button>
-                <Button outline className={cx('tag-button')}>
+                <Button variant="outline" className={cx('tag-button')}>
                     {example.sector}
                 </Button>
             </div>
@@ -130,7 +130,7 @@ function CardExample({ getExample = () => {}, className, myExample, example }: C
                 <div className={cx('action-crud')}>
                     <Tippy content="Sửa đề thi" placement="bottom">
                         <Button
-                            to={routes.editExample(example.id)}
+                            to={routes.editExample(example.id.toString())}
                             state={{ a: 1 }}
                             icon={faPenToSquare}
                             iconColor="var(--primary)"
@@ -174,9 +174,9 @@ function CardExample({ getExample = () => {}, className, myExample, example }: C
             <div className={cx('action')}>
                 <Button
                     className={cx('play')}
-                    to={routes.previewExample(example.id)}
-                    primary
-                    small
+                    to={routes.previewExample(example.id.toString())}
+                    variant="primary"
+                    size="small"
                     leftIcon={faCirclePlay}
                 >
                     Xem đề thi

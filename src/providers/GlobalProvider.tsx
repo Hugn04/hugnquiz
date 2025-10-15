@@ -81,7 +81,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
                 {popup.message}
                 <div style={{ display: 'flex', justifyContent: 'end' }}>
                     <Button
-                        primary
+                        variant="primary"
                         onClick={() => {
                             setPopup((prev) => ({ ...prev, state: false }));
                             popup.next();
@@ -91,7 +91,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
                         {popup.accecptM}
                     </Button>
                     <Button
-                        danger
+                        variant="danger"
                         onClick={() => {
                             setPopup((prev) => ({ ...prev, state: false }));
                             popup.next();

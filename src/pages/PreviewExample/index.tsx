@@ -101,13 +101,13 @@ function PreviewExample() {
                         <div className={cx('actions')}>
                             <PopupStart
                                 idExample={Number.parseInt(subject || '0')}
-                                trigger={<Button primary>Bắt đầu</Button>}
+                                trigger={<Button variant="primary">Bắt đầu</Button>}
                             ></PopupStart>
                             <Button
                                 onClick={() => {
                                     handleMessage();
                                 }}
-                                primary
+                                variant="primary"
                             >
                                 Nhắn tin trong đề thi
                             </Button>

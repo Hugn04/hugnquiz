@@ -104,7 +104,7 @@ function Header({ navBar, onToggleSideBar, searchMobile }: HeaderProps) {
     return (
         <div className={cx('wraper')}>
             <div className={cx('header-logo')}>
-                <Button className={cx('toogle-menu')} onClick={onToggleSideBar} large icon={faBars}></Button>
+                <Button className={cx('toogle-menu')} onClick={onToggleSideBar} size="large" icon={faBars}></Button>
                 <img src={images.logo} alt="Logo"></img>
                 <Link to={routes.home}>
                     <h1 className={cx('header-title')}>{import.meta.env.VITE_APP_NAME}</h1>
@@ -140,13 +140,13 @@ function Header({ navBar, onToggleSideBar, searchMobile }: HeaderProps) {
             <div className={cx('action')}>
                 {navBar && (
                     <div className={cx('nav-bar')}>
-                        <Button className={cx('active')} white to={routes.home}>
+                        <Button className={cx('active')} variant="white" to={routes.home}>
                             Trang chủ
                         </Button>
-                        <Button white to={routes.exam}>
+                        <Button variant="white" to={routes.exam}>
                             Đề thi
                         </Button>
-                        <Button to={routes.myExam} white>
+                        <Button to={routes.myExam} variant="white">
                             Đề thi của tôi
                         </Button>
                     </div>
@@ -158,7 +158,7 @@ function Header({ navBar, onToggleSideBar, searchMobile }: HeaderProps) {
                                 to={routes.createExample}
                                 className={cx('create-exam')}
                                 leftIcon={faSquarePlus}
-                                primary
+                                variant="primary"
                             >
                                 Tạo đề thi
                             </Button>
@@ -196,10 +196,10 @@ function Header({ navBar, onToggleSideBar, searchMobile }: HeaderProps) {
                     </>
                 ) : (
                     <>
-                        <Button className={cx('register')} to={routes.register} leftIcon={faUserPlus} primary>
+                        <Button className={cx('register')} to={routes.register} leftIcon={faUserPlus} variant="primary">
                             Đăng ký
                         </Button>
-                        <Button className={cx('login')} to={routes.login} leftIcon={faCircleUser} primary>
+                        <Button className={cx('login')} to={routes.login} leftIcon={faCircleUser} variant="primary">
                             Đăng Nhập
                         </Button>
                     </>
