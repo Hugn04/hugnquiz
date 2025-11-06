@@ -6,7 +6,7 @@ import { useGlobalContext } from '../hooks/useGlobalContext';
 import { routes } from '../config';
 import { disconnectSocket } from '../utils/socket';
 import { useDispatch } from 'react-redux';
-import type { LoginInfo, User } from '../types/auth';
+import type { LoginInfo, User, UserLogin } from '../types/auth';
 import { AuthContext } from '../context/AuthContext';
 interface AuthProviderProps {
     children: ReactNode;
@@ -17,11 +17,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const { toastPromise } = useGlobalContext();
     const dispatch = useDispatch();
 
-    const login = async (info: LoginInfo) => {
+    const login = async (info: LoginInfo | string) => {
         const toastLogin = toastPromise('Đang đăng nhập...');
         try {
-            const { data } = await request.post<User>('login', info);
-            await setUser(data);
+            let dataUser: UserLogin | null = null;
+            if (typeof info === 'string') {
+                const { data } = await request.post('/auth/google', { id_token: info });
+                dataUser = data;
+            } else {
+                const { data } = await request.post<UserLogin>('login', info);
+                dataUser = data;
+            }
+
+            await setUser(dataUser?.user ?? null);
             toastLogin.success('Đăng nhập thành công');
             navigate(routes.home);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any

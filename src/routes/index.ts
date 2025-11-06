@@ -10,7 +10,7 @@ import Login from '../pages/Login';
 // import CreateExample from '../pages/CreateExample';
 import Register from '../pages/Register';
 import TestComponent from '../pages/TestComponent';
-// import VerifyEmail from '../pages/VerifyEmail';
+import VerifyEmail from '../pages/VerifyEmail';
 // import EditExample from '../pages/EditExample';
 // import Profile from '../pages/Profile';
 // import ShareExample from '../pages/ShareExample';
@@ -34,7 +34,7 @@ const publicRoutes: RouteType[] = [
     { path: routesConfig.home, component: HomePage, layout: HomeLayout },
     { path: routesConfig.login, component: Login, layout: Account },
     { path: routesConfig.register, component: Register, layout: Account },
-    // { path: routesConfig.verifyEmail, component: VerifyEmail, layout: Account },
+    { path: routesConfig.verifyEmail, component: VerifyEmail, layout: Account },
     { path: routesConfig.exam, component: ExamQuestions, props: { searchMobile: true } },
     { path: routesConfig.test, component: TestComponent, layout: null },
     // { path: routesConfig.share, component: ShareExample },

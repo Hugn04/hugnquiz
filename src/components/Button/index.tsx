@@ -6,10 +6,11 @@ import { forwardRef, memo, useEffect, type ReactNode } from 'react';
 
 import styles from './Button.module.scss';
 import type { InputRef } from '../Input';
+import type { OTPInputRef } from '../OTPInput';
 const cx = classNames.bind(styles);
 
 export interface ValidateInputRef {
-    current: InputRef | null;
+    current: InputRef | OTPInputRef | null;
 }
 export interface BaseButtonProps {
     children?: ReactNode;

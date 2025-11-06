@@ -1,0 +1,22 @@
+.otp-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.otp-field {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.error {
+    height: 29px;
+    padding: 8px;
+    color: red;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}

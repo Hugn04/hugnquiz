@@ -11,6 +11,7 @@ import { useGlobalContext } from '../../hooks/useGlobalContext';
 import { routes } from '../../config';
 import request from '../../utils/request';
 import type { AxiosError } from 'axios';
+import LoginWithGoogle from '../../components/LoginWithGoogle';
 
 const cx = classNames.bind(styles);
 function Login() {
@@ -67,6 +68,9 @@ function Login() {
                 >
                     Đăng nhập
                 </Button>
+            </div>
+            <div className={cx('login-google')}>
+                <LoginWithGoogle></LoginWithGoogle>
             </div>
             <div className={cx('forgot-pwr')}>
                 <Button

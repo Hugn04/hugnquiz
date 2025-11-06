@@ -1,4 +1,5 @@
 .login-wraper {
+    gap: 8px;
     margin-top: 6px;
     padding: 0 16px;
 }
@@ -12,6 +13,10 @@
     }
 }
 
+.login-google {
+    margin-top: 16px;
+    padding: 0 16px;
+}
 .forgot-pwr {
     display: flex;
     justify-content: center;

@@ -11,10 +11,14 @@ export interface User {
     avatar: string;
     // thêm các trường khác nếu cần
 }
+export interface UserLogin {
+    user: User;
+    token: string;
+}
 
 export interface AuthContextType {
     user: User | null;
-    login: (info: LoginInfo) => Promise<void | boolean>;
+    login: (info: LoginInfo | string) => Promise<void | boolean>;
     logout: () => Promise<void>;
     auth: (redirect?: boolean) => Promise<boolean>;
 }
