@@ -21,6 +21,7 @@ function ExamQuestions() {
         groupPage: [],
     });
     const [isLoading, setIsLoading] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [isError, setIsError] = useState(false);
     const { state } = useLocation();
     const [params] = useSearchParams();

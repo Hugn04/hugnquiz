@@ -1,22 +1,23 @@
-import type { User } from './auth';
+import type { User, UserAction } from './auth';
 
 export interface Example {
     id: number;
-    like: number;
-    favorited: number;
-    created_at: string;
     name: string;
-    image: string;
-    email: string;
-    user_id: number;
-    avatar: string;
-    role: string;
-    username: string;
-    num_question: number;
     count_test: number;
     count_like: number;
-    credits: number;
     sector: string;
+    image: string | null;
+    credits: number;
+    num_question: number;
+    created_at: string;
+    updated_at: string;
+    user_id: number;
+    question_id: number;
+    user_action: UserAction;
+    user: User;
+}
+export interface Contest extends Example {
+    question: PartQuestion[];
 }
 
 export interface Pagegination {

@@ -16,25 +16,16 @@ import { convertExampleToText, getUserByEmail } from '../../helpers';
 import images from '../../assets/images';
 import { routes } from '../../config';
 import Avatar from '../../components/Avatar';
-import type { Example, MyScore, PartQuestion, Score } from '../../types/exam';
+import type { Contest, Example, MyScore, PartQuestion, Score } from '../../types/exam';
+import extractExample from '../../helpers/extractExample';
 const cx = classNames.bind(styles);
-// const initExample = [
-//     {
-//         name: 'Phần 1',
-//         questions: [
-//             {
-//                 name: 'Có thể đề thi này bị lỗi !',
-//                 answers: [],
-//             },
-//         ],
-//     },
-// ];
+
 function PreviewExample() {
     const { subject } = useParams();
 
     const [score, setScores] = useState<Score[]>([]);
     const [myScore, setMyScores] = useState<MyScore | null>(null);
-    const [example, setExample] = useState<Example | null>(null);
+    const [example, setExample] = useState<Example>();
     const [partQuestions, setPartQuestions] = useState<PartQuestion[]>([]);
     const navigate = useNavigate();
     const handleMessage = async () => {
@@ -54,15 +45,13 @@ function PreviewExample() {
             try {
                 const [scoreRes, questionRes] = await Promise.all([
                     request.get('get-score', { params: { example_id: subject } }),
-                    request.get('/getQuestion', { params: { id: subject } }),
+                    request.get<Contest>('/getQuestion', { params: { id: subject } }),
                 ]);
-
                 setScores(scoreRes.data.scores);
                 setMyScores(scoreRes.data.user_score);
-
-                const exam = JSON.parse(questionRes.data.question);
-                setExample(questionRes.data);
-                setPartQuestions([...exam]);
+                const example = extractExample(questionRes.data);
+                setExample(example);
+                setPartQuestions([...questionRes.data.question]);
             } catch (err) {
                 console.error(err);
                 setPartQuestions([]);

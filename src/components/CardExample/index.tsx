@@ -40,8 +40,8 @@ function CardExample({ getExample = () => {}, className, myExample, example }: C
     const [isHeart, setIsHeart] = useState(false);
 
     useEffect(() => {
-        setIsLike(!!example?.like);
-        setIsHeart(!!example?.favorited);
+        setIsLike(!!example?.user_action.like);
+        setIsHeart(!!example?.user_action.favorited);
     }, [example]);
 
     if (!example) {
@@ -74,16 +74,16 @@ function CardExample({ getExample = () => {}, className, myExample, example }: C
             <div className={cx('example-info')}>
                 {myExample ?? (
                     <Link
-                        to={routes.profile(`${getUserByEmail(example.email)}!${example.user_id}`)}
-                        state={{ email: example.email }}
+                        to={routes.profile(`${getUserByEmail(example.user.email)}!${example.user_id}`)}
+                        state={{ email: example.user.email }}
                     >
                         <div className={cx('info')}>
                             <Avatar
-                                url={example.avatar}
-                                frameUrl={example.role === 'admin' ? images.frame : ''}
+                                url={example.user.avatar}
+                                frameUrl={example.user.role === 'admin' ? images.frame : ''}
                                 classNames={cx('avatar')}
                             ></Avatar>
-                            <p className={cx('name')}>{example.username}</p>
+                            <p className={cx('name')}>{example.user.name}</p>
                         </div>
                     </Link>
                 )}
@@ -131,7 +131,6 @@ function CardExample({ getExample = () => {}, className, myExample, example }: C
                     <Tippy content="Sửa đề thi" placement="bottom">
                         <Button
                             to={routes.editExample(example.id.toString())}
-                            state={{ a: 1 }}
                             icon={faPenToSquare}
                             iconColor="var(--primary)"
                         ></Button>

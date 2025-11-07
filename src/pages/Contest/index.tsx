@@ -16,11 +16,12 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons';
 import Tippy from '@tippyjs/react';
 import images from '../../assets/images';
 import Avatar from '../../components/Avatar';
-import type { Example, PartQuestion } from '../../types/exam';
+import type { Contest, Example } from '../../types/exam';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../redux/hooks';
 import { changeQuestion, setPartQuestions } from '../../redux/slices/contestSlice';
 import PopupFinally from './components/PopupFinally';
+import extractExample from '../../helpers/extractExample';
 const cx = classNames.bind(styles);
 
 function Contest() {
@@ -50,19 +51,16 @@ function Contest() {
         // const newListExample = getExampleRetry(partQuestions);
     };
 
-    const handleGetExample = () => {
-        request
-            .get('/getQuestion', { params: { id: subject } })
-            .then((data) => {
-                const exam: PartQuestion[] = JSON.parse(data.data.question);
-                setIsloading(false);
-
-                setExample(data.data);
-                dispatch(setPartQuestions(shuffleExample([...exam], isQuestionShuffle, isAnswerShuffle)));
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+    const handleGetExample = async () => {
+        try {
+            const { data } = await request.get<Contest>('/getQuestion', { params: { id: subject } });
+            const example = extractExample(data);
+            setExample(example);
+            dispatch(setPartQuestions(shuffleExample([...data.question], isQuestionShuffle, isAnswerShuffle)));
+            setIsloading(false);
+        } catch (error) {
+            console.log(error);
+        }
     };
     useEffect(() => {
         if (timeRef.current) {
@@ -72,8 +70,8 @@ function Contest() {
             }
             timeRef.current.start(time);
         }
-        setIsLike(!!example?.like);
-        setIsHeart(!!example?.favorited);
+        setIsLike(!!example?.user_action.like);
+        setIsHeart(!!example?.user_action.favorited);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLoading]);
 
@@ -146,13 +144,13 @@ function Contest() {
                     <h1>{example?.name}</h1>
                     <div className={cx('info-author')}>
                         <Avatar
-                            url={example?.avatar ?? ''}
+                            url={example?.user.avatar ?? ''}
                             size={34}
-                            frameUrl={example?.role === 'admin' ? images.frame : ''}
+                            frameUrl={example?.user.role === 'admin' ? images.frame : ''}
                             // classNames={cx('avatar')}
                         ></Avatar>
                         {/* <img src={example?.avatar || images.defaultAvatar} alt="Ảnh tác giả"></img> */}
-                        <p className={cx('name')}>{example?.username}</p>
+                        <p className={cx('name')}>{example?.user.name}</p>
                     </div>
                     <div className={cx('chart')}>
                         <div>

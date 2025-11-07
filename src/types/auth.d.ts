@@ -9,11 +9,18 @@ export interface User {
     email: string;
     role: string;
     avatar: string;
-    // thêm các trường khác nếu cần
 }
 export interface UserLogin {
     user: User;
     token: string;
+}
+
+export interface UserAction {
+    id: number;
+    like: boolean;
+    favorited: boolean;
+    user_id: number;
+    example_id: number;
 }
 
 export interface AuthContextType {
