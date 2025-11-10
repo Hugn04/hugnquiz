@@ -1,0 +1,158 @@
+.wraper {
+    color: var(--text-color);
+    //transition: all ease 0.5s;
+    display: flex;
+    width: 100%;
+    * {
+        font-family: Roboto, sans-serif;
+    }
+}
+.box {
+    border-radius: 16px;
+    background-color: var(--background-color);
+    padding: 16px;
+    margin: 16px 16px 16px 0px;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 10px 10px 4px;
+}
+.edit {
+    width: 800px;
+    padding: 16px;
+
+    .header_area {
+        padding-bottom: 8px;
+        display: flex;
+        justify-content: space-between;
+        .tutorial_cotainer {
+            display: flex;
+            align-items: center;
+        }
+        .file-upload {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .file-upload input[type='file'] {
+            display: none;
+        }
+        .tutorial-btn {
+            background-color: rgb(133, 133, 133);
+            transform: scale(0.5);
+        }
+    }
+    .core {
+        padding: 16px;
+        border: 1px solid var(--color-disable);
+        border-radius: 8px;
+        textarea {
+            color: var(--text-color);
+            background-color: var(--background-color);
+            width: 100%;
+            height: 400px;
+            resize: none;
+            outline: none;
+            border: none;
+        }
+    }
+    p {
+        color: rgb(107, 114, 128);
+        font-weight: 400;
+        font-size: 1.2rem;
+        line-height: 1.66;
+        text-align: left;
+        margin: 3px 0px 0px;
+        font-style: italic !important;
+    }
+    .button {
+        margin: 16px;
+    }
+}
+.input-group {
+    margin: 16px 0;
+}
+//Preview
+.preview {
+    width: 543px;
+    .header {
+        padding: 0 8px;
+    }
+    .content {
+        padding: 16px 8px;
+        .part {
+            height: 40px;
+            * {
+                font-size: 1.3rem;
+            }
+            display: flex;
+        }
+    }
+}
+.group-header {
+    h1 {
+        margin-bottom: 8px;
+    }
+    .list {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        max-height: 220px;
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        .button {
+            width: 62px;
+            justify-content: center;
+            margin: 3px;
+        }
+    }
+}
+.example {
+    margin-top: 8px;
+    border: 1px solid var(--color-disable);
+    border-radius: 16px;
+    > .header {
+        padding: 16px 24px 0px;
+    }
+}
+.card-content {
+    padding: 16px 24px;
+    .question {
+        font-size: 1.4rem;
+        img {
+            width: 100%;
+        }
+    }
+}
+.answer-group {
+    display: flex;
+    flex-wrap: wrap;
+    .answer {
+        display: flex;
+        flex-basis: 50%;
+        padding: 4px 8px;
+        margin-top: 8px;
+        svg {
+            font-size: 2rem;
+        }
+        p {
+            margin-left: 8px;
+            font-size: 1.4rem;
+        }
+    }
+}
+.err-wrapper {
+    padding: 100px 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.tutorial {
+    width: 550px;
+    gap: 30px;
+}

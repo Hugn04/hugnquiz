@@ -20,5 +20,6 @@ createRoot(document.getElementById('root')!).render(
                 </Provider>
             </SocketProvider>
         </GlobalStyle>
+        ,
     </StrictMode>,
 );

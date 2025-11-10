@@ -7,6 +7,9 @@ import request from '../../utils/request';
 import Button from '../../components/Button';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import type { Example, Links, Pagegination } from '../../types/exam';
+import { useGlobalContext } from '../../hooks/useGlobalContext';
+import { isAxiosError } from 'axios';
+import type { ApiErrorResponse } from '../../types/api';
 const cx = classNames.bind(styles);
 type Page = {
     prevPageUrl: string | null;
@@ -14,6 +17,7 @@ type Page = {
     groupPage: Links[];
 };
 function ExamQuestions() {
+    const { showToast } = useGlobalContext();
     const [listExample, setListExample] = useState<Example[]>([]);
     const [page, setPage] = useState<Page>({
         prevPageUrl: null,
@@ -21,8 +25,6 @@ function ExamQuestions() {
         groupPage: [],
     });
     const [isLoading, setIsLoading] = useState(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [isError, setIsError] = useState(false);
     const { state } = useLocation();
     const [params] = useSearchParams();
     const [searchValue, setSearchValue] = useState(params.get('search') || '');
@@ -59,12 +61,23 @@ function ExamQuestions() {
         const fetchData = async () => {
             try {
                 setIsLoading(true);
-                const example = await request.get('get-example', { params: { search } });
-                handleChangePage(example.data);
-                setIsLoading(false);
+                const { data } = await request.get<Pagegination>('get-example', {
+                    params: { search, orderby: 'desc' },
+                });
+                handleChangePage(data);
             } catch (error) {
-                setIsError(true);
-                console.log(error);
+                if (isAxiosError<ApiErrorResponse>(error)) {
+                    console.log(error);
+
+                    showToast(error.response?.data.message ?? 'Lỗi kết nối server');
+                    console.log('Axios error:', error.response);
+                } else {
+                    // Lỗi JS khác (Runtime, JSON parse, ...)
+                    showToast('Đã xảy ra lỗi không xác định');
+                    console.log('Unknown error:', error);
+                }
+            } finally {
+                setIsLoading(false);
             }
         };
         fetchData();

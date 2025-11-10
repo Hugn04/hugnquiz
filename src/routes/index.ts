@@ -5,9 +5,8 @@ import { routes as routesConfig } from '../config';
 import HomePage from '../pages/Home';
 import ExamQuestions from '../pages/ExamQuestions';
 import MyExample from '../pages/MyExample';
-import Contest from '../pages/Contest';
+
 import Login from '../pages/Login';
-// import CreateExample from '../pages/CreateExample';
 import Register from '../pages/Register';
 import TestComponent from '../pages/TestComponent';
 import VerifyEmail from '../pages/VerifyEmail';
@@ -18,6 +17,8 @@ import VerifyEmail from '../pages/VerifyEmail';
 // import ChangePassword from '../pages/ChangePassword';
 // import HomeAdmin from '../pages/admins/HomeAdmin';
 import PreviewExample from '../pages/PreviewExample';
+import ContestPage from '../pages/Contest';
+import CreateExample from '../pages/CreateExample';
 // import MessagePage from '../pages/MessagePage';
 
 export type RouteType = {
@@ -41,7 +42,7 @@ const publicRoutes: RouteType[] = [
 ];
 
 const privateRoutes: RouteType[] = [
-    { path: routesConfig.conTest(), component: Contest, props: { sideBarMini: true } },
+    { path: routesConfig.conTest(), component: ContestPage, props: { sideBarMini: true } },
     { path: routesConfig.previewExample(), component: PreviewExample, props: { sideBarMini: true } },
     { path: routesConfig.myExam, component: MyExample },
     // { path: routesConfig.editExample(), component: EditExample, props: { sideBarMini: true } },
@@ -49,7 +50,7 @@ const privateRoutes: RouteType[] = [
     // { path: routesConfig.changePassword, component: ChangePassword, layout: Account },
     // { path: routesConfig.favorite, component: MyFavorite },
     // { path: routesConfig.message, component: MessagePage, props: { noPadding: true } },
-    // { path: routesConfig.createExample, component: CreateExample, props: { sideBarMini: true } },
+    { path: routesConfig.createExample, component: CreateExample, props: { sideBarMini: true } },
 ];
 
 const adminRoutes: RouteType[] = [

@@ -82,7 +82,6 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((p
         const tempEvent = onClick;
         fnClick = () => {
             const error = inputs.map((input) => input?.current?.validate(true));
-
             if (error.every((element) => typeof element !== 'string')) {
                 if (tempEvent) tempEvent();
             }
@@ -92,7 +91,7 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((p
         if (validateInput) {
             handleValidateInput(validateInput);
         }
-    }, []);
+    }, [validateInput]);
     if ('to' in props && to) {
         return (
             <Link

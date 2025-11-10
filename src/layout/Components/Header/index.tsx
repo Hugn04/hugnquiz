@@ -23,6 +23,7 @@ import NavList from '../NavList';
 import { useAuth } from '../../../hooks/useAuth';
 import { routes } from '../../../config';
 import Avatar from '../../../components/Avatar';
+import { getMessageRole } from '../../../helpers/roleController';
 
 const cx = classNames.bind(styles);
 type HeaderProps = { navBar?: boolean; onToggleSideBar?: () => void; searchMobile?: boolean };
@@ -188,7 +189,7 @@ function Header({ navBar, onToggleSideBar, searchMobile }: HeaderProps) {
                                 ></img> */}
                                 <div className={cx('account_info')}>
                                     <h3 className={cx('name')}>{user.name}</h3>
-                                    <h3 className={cx('role')}>{user.role.toUpperCase()}</h3>
+                                    <h3 className={cx('role')}>{getMessageRole(user.role)}</h3>
                                 </div>
                                 <Button className={cx('menu')} leftIcon={faEllipsisVertical}></Button>
                             </div>

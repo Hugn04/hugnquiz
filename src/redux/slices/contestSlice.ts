@@ -36,6 +36,24 @@ const contestSlice = createSlice({
             state.result.correct = 0;
             state.result.wrong = 0;
         },
+        setEditPartQuestions: (state, action: PayloadAction<PartQuestion[]>) => {
+            const objExample = action.payload;
+            if (!objExample[state.currentPart]) {
+                state.currentPart = objExample.length - 1;
+                // setCurentPart(objExample.length - 1);
+            } else {
+                const curentPartExample = objExample[state.currentPart].questions;
+                if (!curentPartExample[state.currentQuestion]) {
+                    state.currentQuestion = curentPartExample.length - 1;
+                    // setCurentQuestion(curentPartExample.length - 1);
+                }
+            }
+            state.partQuestions = action.payload;
+            const num = action.payload.reduce((total, item) => {
+                return total + item.questions.length;
+            }, 0);
+            state.numQuestion = num;
+        },
         chooseAnswer: (state, action: PayloadAction<number>) => {
             const question = state.partQuestions[state.currentPart].questions[state.currentQuestion];
             question.choose = action.payload;
@@ -68,8 +86,13 @@ const contestSlice = createSlice({
                 state.currentQuestion = type;
             }
         },
+        changePart: (state, action: PayloadAction<number>) => {
+            state.currentPart = action.payload;
+            state.currentQuestion = 0;
+        },
     },
 });
 
-export const { setPartQuestions, chooseAnswer, changeQuestion } = contestSlice.actions;
+export const { setPartQuestions, chooseAnswer, changeQuestion, changePart, setEditPartQuestions } =
+    contestSlice.actions;
 export default contestSlice.reducer;

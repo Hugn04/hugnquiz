@@ -19,12 +19,12 @@ import Avatar from '../../components/Avatar';
 import type { Contest, Example } from '../../types/exam';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../redux/hooks';
-import { changeQuestion, setPartQuestions } from '../../redux/slices/contestSlice';
+import { changePart, changeQuestion, setPartQuestions } from '../../redux/slices/contestSlice';
 import PopupFinally from './components/PopupFinally';
 import extractExample from '../../helpers/extractExample';
 const cx = classNames.bind(styles);
 
-function Contest() {
+function ContestPage() {
     const { state } = useLocation();
     const [isLoading, setIsloading] = useState(true);
     const { delayNext, isQuestionShuffle, isAnswerShuffle, test } = state
@@ -245,10 +245,9 @@ function Contest() {
                             return (
                                 <Button
                                     key={index}
-                                    // onClick={() => {
-                                    //     setCurentPart(index);
-                                    //     setCurentQuestion(0);
-                                    // }}
+                                    onClick={() => {
+                                        dispatch(changePart(index));
+                                    }}
                                     className={cx('button', { active: index === curentPart })}
                                     leftIcon={faBookOpen}
                                 >
@@ -330,4 +329,4 @@ function Contest() {
     );
 }
 
-export default Contest;
+export default ContestPage;
