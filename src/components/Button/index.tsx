@@ -7,10 +7,12 @@ import { forwardRef, memo, useEffect, type ReactNode } from 'react';
 import styles from './Button.module.scss';
 import type { InputRef } from '../Input';
 import type { OTPInputRef } from '../OTPInput';
+import type { SelectRef } from '../Select';
 const cx = classNames.bind(styles);
 
 export interface ValidateInputRef {
-    current: InputRef | OTPInputRef | null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    current: InputRef | OTPInputRef | SelectRef<any> | null;
 }
 export interface BaseButtonProps {
     children?: ReactNode;

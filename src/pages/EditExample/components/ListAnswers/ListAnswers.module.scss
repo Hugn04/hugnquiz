@@ -1,0 +1,33 @@
+.wrapper {
+    align-items: center;
+}
+.answer-group {
+    display: flex;
+    margin-bottom: 8px;
+    align-items: center;
+    .button {
+        background-color: red;
+        width: 36px;
+        height: 36px;
+    }
+}
+.check {
+    width: 16px;
+}
+.input-area {
+    margin: 0 16px;
+    font-family: 'Inter', sans-serif;
+    padding: 8px 16px;
+
+    background-color: var(--background-color);
+    color: var(--text-color);
+    width: 100%;
+    border-radius: 8px;
+    min-height: 50px;
+    max-height: 100px;
+    resize: vertical;
+}
+.action {
+    display: flex;
+    justify-content: space-between;
+}

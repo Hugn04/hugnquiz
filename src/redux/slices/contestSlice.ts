@@ -1,7 +1,7 @@
 // redux/contestSlice.ts
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { PartQuestion } from '../../types/exam';
+import type { PartQuestion, Question } from '../../types/exam';
 
 interface ContestState {
     partQuestions: PartQuestion[];
@@ -90,9 +90,29 @@ const contestSlice = createSlice({
             state.currentPart = action.payload;
             state.currentQuestion = 0;
         },
+        setCurrentQuestion: (state, action: PayloadAction<Question>) => {
+            state.partQuestions[state.currentPart].questions[state.currentQuestion] = action.payload;
+        },
+        addQuestion: (state, action: PayloadAction<Question>) => {
+            state.partQuestions[state.currentPart].questions.push(action.payload);
+            state.currentQuestion = state.partQuestions[state.currentPart].questions.length - 1;
+        },
+        deleteCurrentQuestion: (state) => {
+            if (state.partQuestions[state.currentPart].questions.length <= 1) return;
+            state.partQuestions[state.currentPart].questions.splice(state.currentQuestion, 1);
+            if (state.currentQuestion !== 0) state.currentQuestion -= 1;
+        },
     },
 });
 
-export const { setPartQuestions, chooseAnswer, changeQuestion, changePart, setEditPartQuestions } =
-    contestSlice.actions;
+export const {
+    setPartQuestions,
+    chooseAnswer,
+    changeQuestion,
+    changePart,
+    setEditPartQuestions,
+    setCurrentQuestion,
+    addQuestion,
+    deleteCurrentQuestion,
+} = contestSlice.actions;
 export default contestSlice.reducer;

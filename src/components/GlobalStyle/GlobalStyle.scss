@@ -74,8 +74,10 @@ h1 {
         width: 100%;
     }
 }
-html * {
-    transition: background-color ease 0.5s;
+html *,
+*::before,
+*::after {
+    transition: background-color ease 0.5s !important;
 }
 html *::-webkit-scrollbar {
     border-radius: 0;

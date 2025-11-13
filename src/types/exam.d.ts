@@ -5,7 +5,7 @@ export interface Example {
     name: string;
     count_test: number;
     count_like: number;
-    sector: string;
+    sector: Sector;
     image: string | null;
     credits: number;
     num_question: number;
@@ -49,6 +49,10 @@ export interface Score {
     updated_at: string;
     user: User;
     user_id: number;
+}
+export interface Sector {
+    id: number;
+    name: string;
 }
 
 export interface PartQuestion {

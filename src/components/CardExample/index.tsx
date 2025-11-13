@@ -123,7 +123,7 @@ function CardExample({ getExample = () => {}, className, myExample, example }: C
                     {example.credits} tín chỉ
                 </Button>
                 <Button variant="outline" className={cx('tag-button')}>
-                    {example.sector}
+                    {example.sector.name}
                 </Button>
             </div>
             {myExample && (

@@ -18,16 +18,8 @@ import Tippy from '@tippyjs/react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { changePart, changeQuestion, setEditPartQuestions } from '../../redux/slices/contestSlice';
 import Select, { type SelectRef } from '../../components/Select';
+import type { Sector } from '../../types/exam';
 
-type Sector = {
-    id: number;
-    name: string;
-};
-const sectorList: Sector[] = [
-    { id: 1, name: 'IT' },
-    { id: 2, name: 'Kinh tế' },
-    { id: 3, name: 'Marketing' },
-];
 const cx = classNames.bind(styles);
 const template =
     "'Phần 1\nCâu 1:\n*Đáp án A\nĐáp án B\nĐáp án C\n\nCâu 2:\nĐáp án A\n*Đáp án B\nĐáp án C\n\nCâu 3:\nĐáp án A\n*Đáp án B\nĐáp án C\n\n'Phần 2\nCâu 1:\n*Đáp án A\nĐáp án B\nĐáp án C\n\nCâu 2:\n*Đáp án A\nĐáp án B\nĐáp án C\n\n";
@@ -46,6 +38,7 @@ function CreateExample() {
     const partQuestions = useAppSelector((state) => state.contest.partQuestions);
     const curentPart = useAppSelector((state) => state.contest.currentPart);
     const curentQuestion = useAppSelector((state) => state.contest.currentQuestion);
+    const [sectorList, setSectorList] = useState<Sector[]>([]);
 
     const [textarea, setTextarea] = useState('');
     const navigate = useNavigate();
@@ -102,6 +95,17 @@ function CreateExample() {
             console.error(error);
         }
     };
+    useEffect(() => {
+        const fetchSector = async () => {
+            try {
+                const { data: sectors } = await request.get<Sector[]>('/sectors');
+                setSectorList(sectors);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchSector();
+    }, []);
     useEffect(() => {
         const objExample = convertTextToExample(textarea);
 
@@ -186,15 +190,14 @@ function CreateExample() {
                         </div>
                         <Select<Sector>
                             ref={sectorRef}
+                            title="Chọn ngành"
+                            validates={{ require: 'Bắt buộc chọn ngành' }}
                             items={sectorList}
                             placeholder="Chọn ngành"
                             filter={(items, search) =>
                                 items.filter((i) => i.name.toLowerCase().includes(search.toLowerCase()))
                             }
                             render={(item) => item.name}
-                            onSelect={(item) => {
-                                console.log(item);
-                            }}
                         />
                     </div>
                 </div>
@@ -271,7 +274,7 @@ function CreateExample() {
                         disable={creating}
                         onClick={handleCreateExample}
                         variant="primary"
-                        validateInput={[nameExampleRef, creditsRef]}
+                        validateInput={[nameExampleRef, creditsRef, sectorRef]}
                     >
                         Xác nhận
                     </Button>

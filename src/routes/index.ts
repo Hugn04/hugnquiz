@@ -10,7 +10,7 @@ import Login from '../pages/Login';
 import Register from '../pages/Register';
 import TestComponent from '../pages/TestComponent';
 import VerifyEmail from '../pages/VerifyEmail';
-// import EditExample from '../pages/EditExample';
+import EditExample from '../pages/EditExample';
 // import Profile from '../pages/Profile';
 // import ShareExample from '../pages/ShareExample';
 // import MyFavorite from '../pages/MyFavorite';
@@ -45,7 +45,7 @@ const privateRoutes: RouteType[] = [
     { path: routesConfig.conTest(), component: ContestPage, props: { sideBarMini: true } },
     { path: routesConfig.previewExample(), component: PreviewExample, props: { sideBarMini: true } },
     { path: routesConfig.myExam, component: MyExample },
-    // { path: routesConfig.editExample(), component: EditExample, props: { sideBarMini: true } },
+    { path: routesConfig.editExample(), component: EditExample, props: { sideBarMini: true } },
     // { path: routesConfig.profile(), layout: HomeLayout, component: Profile, props: { sideBarMini: true } },
     // { path: routesConfig.changePassword, component: ChangePassword, layout: Account },
     // { path: routesConfig.favorite, component: MyFavorite },
