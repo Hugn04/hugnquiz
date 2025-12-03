@@ -7,21 +7,17 @@ import SideBar from '../Components/SideBar';
 
 const cx = classNames.bind(styles);
 
-type DefaultProps = { children: React.ReactNode; sideBarMini?: boolean; noPadding?: boolean; searchMobile?: boolean };
+type DefaultProps = { children: React.ReactNode; sideBarMini?: boolean; searchMobile?: boolean };
 
-function Default({ children, sideBarMini, noPadding, searchMobile }: DefaultProps) {
+function Default({ children, sideBarMini, searchMobile }: DefaultProps) {
     const [stateSideBar, setStateSideBar] = useState(false);
     const handleToggleSideBar = () => {
         setStateSideBar(!stateSideBar);
     };
-    const classes = cx('wraper', {
-        hide: sideBarMini,
-        notPadding: noPadding,
-    });
     return (
         <>
             <Header onToggleSideBar={handleToggleSideBar} searchMobile={searchMobile}></Header>
-            <div className={classes}>
+            <div className={cx('wrapper')}>
                 <div
                     className={cx('veli', { none: !stateSideBar })}
                     onClick={() => {

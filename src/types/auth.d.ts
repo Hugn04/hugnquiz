@@ -14,6 +14,10 @@ export interface UserLogin {
     user: User;
     token: string;
 }
+export interface UserProfile extends User {
+    banner: string;
+    examples: BaseExample[];
+}
 
 export interface UserAction {
     id: number;

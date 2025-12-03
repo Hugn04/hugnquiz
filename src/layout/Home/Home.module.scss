@@ -1,8 +1,9 @@
-.wraper {
-    margin-top: 70px;
-}
 .sidebar {
     display: none;
+}
+.content {
+    flex: 1;
+    overflow: auto;
 }
 @media only screen and (max-width: 600px) {
     .sidebar {

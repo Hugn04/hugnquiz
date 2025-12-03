@@ -1,16 +1,23 @@
-.wraper {
-    position: fixed;
-    left: 0;
-    top: 70px;
+.wrapper {
+    position: relative;
     width: 280px;
-    height: calc(100vh - 70px);
-    padding: 8px 8px;
     z-index: 999;
+    transition: transform 0.5s ease, background-color ease 0.5s, width 0.5s ease !important;
+    height: 100%;
+    // background-color: var(--background-color);
+    &.hide {
+        width: 70px;
+    }
+}
+
+.sidebar {
+    position: absolute;
+    height: 100%;
+    padding: 8px 8px;
     background-color: var(--background-color);
     border-right: 1px solid var(--color-disable);
     color: var(--text-color);
-    transition: all ease 0.5s;
-
+    transition: transform 0.5s ease, background-color ease 0.5s, width 0.5s ease !important;
     overflow: hidden;
     &.active {
         transform: translateX(0);
@@ -39,7 +46,13 @@
 }
 
 @media only screen and (max-width: 600px) {
-    .wraper {
+    .sidebar {
+        position: fixed;
+        width: 280px;
         transform: translateX(-280px);
+    }
+    .wrapper {
+        width: 0;
+        position: fixed;
     }
 }

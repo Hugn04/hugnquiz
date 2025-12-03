@@ -184,7 +184,7 @@ const Input = forwardRef<InputRef, InputProps>(
                     </button> */}
                     </div>
                 </div>
-                <div className={cx('err-mesage')}>{error && error}</div>
+                {validates && <div className={cx('err-mesage')}>{error && error}</div>}
             </div>
         );
     },

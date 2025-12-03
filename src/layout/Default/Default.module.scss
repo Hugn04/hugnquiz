@@ -1,20 +1,20 @@
-.wraper {
+.container {
     display: flex;
-    margin: 70px 0 0 280px;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+}
+.wrapper {
+    flex: 1;
+    display: flex;
+    overflow: auto;
     background-color: var(--theme-color);
-
-    //min-height: calc(100vh - 70px);
-    padding: 24px;
-    &.notPadding {
-        padding: 0;
-    }
-    &.hide {
-        margin-left: 80px;
-    }
 }
 
 .content {
-    width: 100%;
+    // padding: 8px;
+    overflow: auto;
+    flex: 1;
 }
 .veli {
     display: none;

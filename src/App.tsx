@@ -8,6 +8,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import AdminRoute from './components/AdminRoute';
 import { AuthProvider } from './providers/AuthProvider';
 import { GlobalProvider } from './providers/GlobalProvider';
+import './App.css';
 
 function App() {
     const [theme, setTheme] = useLocalStorage('theme-dark', false);
@@ -44,62 +45,60 @@ function App() {
     return (
         <BrowserRouter>
             <GlobalProvider>
-                <div className="App">
-                    <AuthProvider>
-                        <Routes>
-                            {publicRoutes.map((item, index) => {
-                                const Component = item.component;
-                                const PageLayout = handleLayout(item);
-                                return (
-                                    <Route
-                                        key={index}
-                                        path={item.path}
-                                        element={
+                <AuthProvider>
+                    <Routes>
+                        {publicRoutes.map((item, index) => {
+                            const Component = item.component;
+                            const PageLayout = handleLayout(item);
+                            return (
+                                <Route
+                                    key={index}
+                                    path={item.path}
+                                    element={
+                                        <PageLayout {...item.props}>
+                                            <Component></Component>
+                                        </PageLayout>
+                                    }
+                                ></Route>
+                            );
+                        })}
+                        {privateRoutes.map((item, index) => {
+                            const Component = item.component;
+                            const PageLayout = handleLayout(item);
+                            return (
+                                <Route
+                                    key={index}
+                                    path={item.path}
+                                    element={
+                                        <PageLayout {...item.props}>
+                                            <ProtectedRoute>
+                                                <Component></Component>
+                                            </ProtectedRoute>
+                                        </PageLayout>
+                                    }
+                                ></Route>
+                            );
+                        })}
+                        {adminRoutes.map((item, index) => {
+                            const Component = item.component;
+                            const PageLayout = handleLayout(item);
+                            return (
+                                <Route
+                                    key={index}
+                                    path={item.path}
+                                    element={
+                                        <AdminRoute>
                                             <PageLayout {...item.props}>
                                                 <Component></Component>
                                             </PageLayout>
-                                        }
-                                    ></Route>
-                                );
-                            })}
-                            {privateRoutes.map((item, index) => {
-                                const Component = item.component;
-                                const PageLayout = handleLayout(item);
-                                return (
-                                    <Route
-                                        key={index}
-                                        path={item.path}
-                                        element={
-                                            <ProtectedRoute>
-                                                <PageLayout {...item.props}>
-                                                    <Component></Component>
-                                                </PageLayout>
-                                            </ProtectedRoute>
-                                        }
-                                    ></Route>
-                                );
-                            })}
-                            {adminRoutes.map((item, index) => {
-                                const Component = item.component;
-                                const PageLayout = handleLayout(item);
-                                return (
-                                    <Route
-                                        key={index}
-                                        path={item.path}
-                                        element={
-                                            <AdminRoute>
-                                                <PageLayout {...item.props}>
-                                                    <Component></Component>
-                                                </PageLayout>
-                                            </AdminRoute>
-                                        }
-                                    ></Route>
-                                );
-                            })}
-                            <Route path="*" element={<NotFoundPage />} />
-                        </Routes>
-                    </AuthProvider>
-                </div>
+                                        </AdminRoute>
+                                    }
+                                ></Route>
+                            );
+                        })}
+                        <Route path="*" element={<NotFoundPage />} />
+                    </Routes>
+                </AuthProvider>
             </GlobalProvider>
         </BrowserRouter>
     );

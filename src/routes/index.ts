@@ -11,9 +11,9 @@ import Register from '../pages/Register';
 import TestComponent from '../pages/TestComponent';
 import VerifyEmail from '../pages/VerifyEmail';
 import EditExample from '../pages/EditExample';
-// import Profile from '../pages/Profile';
+import Profile from '../pages/Profile';
 // import ShareExample from '../pages/ShareExample';
-// import MyFavorite from '../pages/MyFavorite';
+import MyFavorite from '../pages/MyFavorite';
 // import ChangePassword from '../pages/ChangePassword';
 // import HomeAdmin from '../pages/admins/HomeAdmin';
 import PreviewExample from '../pages/PreviewExample';
@@ -36,7 +36,7 @@ const publicRoutes: RouteType[] = [
     { path: routesConfig.login, component: Login, layout: Account },
     { path: routesConfig.register, component: Register, layout: Account },
     { path: routesConfig.verifyEmail, component: VerifyEmail, layout: Account },
-    { path: routesConfig.exam, component: ExamQuestions, props: { searchMobile: true } },
+    { path: routesConfig.exam, component: ExamQuestions },
     { path: routesConfig.test, component: TestComponent, layout: null },
     // { path: routesConfig.share, component: ShareExample },
 ];
@@ -46,9 +46,9 @@ const privateRoutes: RouteType[] = [
     { path: routesConfig.previewExample(), component: PreviewExample, props: { sideBarMini: true } },
     { path: routesConfig.myExam, component: MyExample },
     { path: routesConfig.editExample(), component: EditExample, props: { sideBarMini: true } },
-    // { path: routesConfig.profile(), layout: HomeLayout, component: Profile, props: { sideBarMini: true } },
+    { path: routesConfig.profile(), layout: HomeLayout, component: Profile, props: { sideBarMini: true } },
     // { path: routesConfig.changePassword, component: ChangePassword, layout: Account },
-    // { path: routesConfig.favorite, component: MyFavorite },
+    { path: routesConfig.favorite, component: MyFavorite },
     // { path: routesConfig.message, component: MessagePage, props: { noPadding: true } },
     { path: routesConfig.createExample, component: CreateExample, props: { sideBarMini: true } },
 ];

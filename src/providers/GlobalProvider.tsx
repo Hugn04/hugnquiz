@@ -12,7 +12,7 @@ interface GlobalProviderProps {
 
 interface PopupState {
     state: boolean;
-    message: string;
+    message: ReactNode;
     next: () => void;
     accecpt: () => void;
     cancel: () => void;

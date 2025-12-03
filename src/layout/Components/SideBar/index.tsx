@@ -90,13 +90,19 @@ function SideBar({ stateSideBar, sideBarMini }: SideBarProps) {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pathname]);
-    const classes = cx('wraper', {
+    const classes = cx('sidebar', {
+        active: stateSideBar,
+        hide: sideBarMini && !stateSideBar,
+    });
+    const classesWrapper = cx('wrapper', {
         active: stateSideBar,
         hide: sideBarMini && !stateSideBar,
     });
     return (
-        <div className={classes}>
-            <NavList classNameButton={cx('button')} menus={menus}></NavList>
+        <div className={classesWrapper}>
+            <div className={classes}>
+                <NavList classNameButton={cx('button')} menus={menus}></NavList>
+            </div>
         </div>
     );
 }

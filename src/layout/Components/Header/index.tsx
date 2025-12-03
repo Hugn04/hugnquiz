@@ -101,7 +101,6 @@ function Header({ navBar, onToggleSideBar, searchMobile }: HeaderProps) {
             });
         }
     }, [auth, temp, user]);
-
     return (
         <div className={cx('wraper')}>
             <div className={cx('header-logo')}>

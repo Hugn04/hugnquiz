@@ -12,13 +12,13 @@ function Home({ children }: { children: React.ReactNode }) {
         setStateSideBar(!stateSideBar);
     };
     return (
-        <div className={cx('wraper')}>
+        <>
             <Header onToggleSideBar={handleToggleSideBar} navBar={true}></Header>
             <div className={cx('sidebar')}>
                 <SideBar stateSideBar={stateSideBar}></SideBar>
             </div>
-            {children}
-        </div>
+            <div className={cx('content')}>{children}</div>
+        </>
     );
 }
 

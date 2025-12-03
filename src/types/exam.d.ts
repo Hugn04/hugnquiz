@@ -1,6 +1,6 @@
 import type { User, UserAction } from './auth';
 
-export interface Example {
+export interface BaseExample {
     id: number;
     name: string;
     count_test: number;
@@ -14,6 +14,9 @@ export interface Example {
     user_id: number;
     question_id: number;
     user_action: UserAction;
+}
+
+export interface Example extends BaseExample {
     user: User;
 }
 export interface Contest extends Example {

@@ -16,18 +16,10 @@
     input {
         width: 100%;
         border-radius: 8px;
-    }
-    select {
-        width: 100%;
-        border-radius: 8px;
-        border: none;
-        outline: none;
-    }
-    input,
-    select {
+        line-height: 16px;
         color: var(--text-color);
         background-color: var(--background-color);
-        padding: 16px;
+        padding: 10px 12px;
     }
 
     .label {

@@ -11,6 +11,7 @@ import slider1 from './slider1.png';
 import slider2 from './slider2.png';
 import slider3 from './slider3.png';
 import frame from './frame.png';
+import notCard from './notcard.png';
 
 const images = {
     logo,
@@ -25,6 +26,7 @@ const images = {
     slider2,
     slider3,
     frame,
+    notCard,
 };
 
 export default images;
