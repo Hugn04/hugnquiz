@@ -12,7 +12,13 @@
 .filter {
     padding: 16px 32px;
     display: flex;
+    justify-content: space-between;
+    gap: 8px;
     border-bottom: 1px solid var(--color-disable);
+}
+.sort {
+    display: flex;
+    gap: 4px;
 }
 .content {
     overflow: auto;

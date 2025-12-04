@@ -1,9 +1,20 @@
 import classNames from 'classnames/bind';
-import { forwardRef, useCallback, useImperativeHandle, useRef, useState, type CSSProperties, type JSX } from 'react';
+import {
+    forwardRef,
+    useCallback,
+    useEffect,
+    useImperativeHandle,
+    useRef,
+    useState,
+    type CSSProperties,
+    type JSX,
+} from 'react';
 
 import useDebounce from '../../hooks/useDebounce';
 import { useGlobalContext } from '../../hooks/useGlobalContext';
 import styles from './Select.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
 
 export interface SelectRef<T> {
@@ -18,6 +29,7 @@ interface ValidateRules {
 }
 
 interface SelectInnerProps<T> {
+    canClose?: boolean;
     style?: CSSProperties;
     validates?: ValidateRules;
     debouncedTime?: number;
@@ -25,7 +37,7 @@ interface SelectInnerProps<T> {
     items: T[];
     filter?: (items: T[], searchQuery: string) => T[];
     render: (item: T) => string;
-    onSelect?: (item: T) => void;
+    onSelect?: (item: T | null) => void;
     defaultValue?: T;
     title?: string;
 }
@@ -41,6 +53,7 @@ function SelectInner<T>(
         debouncedTime = 0,
         onSelect,
         placeholder,
+        canClose,
     }: SelectInnerProps<T>,
     ref: React.Ref<SelectRef<T>>,
 ) {
@@ -81,6 +94,9 @@ function SelectInner<T>(
         validate,
     }));
 
+    useEffect(() => {
+        if (onSelect) onSelect(selected);
+    }, [selected]);
     if (!filter) {
         return (
             <select
@@ -117,35 +133,56 @@ function SelectInner<T>(
                     }}
                     onBlur={() => {
                         validate();
-                        if (!searchQuery && selected) {
+                        if (selected) {
                             setSearchQuery(render(selected));
+                        } else {
+                            setSearchQuery('');
                         }
+
+                        // if (!searchQuery) {
+                        // }
                         setTimeout(() => setIsDropdownOpen(false), 150);
                     }}
                     placeholder={placeholder}
                     className={cx('select-input')}
                 />
+                {canClose && selected && (
+                    <div
+                        onClick={() => {
+                            setSelected(null);
+                            setSearchQuery('');
+                        }}
+                        className={cx('close')}
+                    >
+                        <FontAwesomeIcon size="sm" icon={faClose}></FontAwesomeIcon>
+                    </div>
+                )}
 
                 {isDropdownOpen && (
                     <div className={cx('select-dropdown')}>
-                        {filteredItems?.map((item, index) => (
-                            <div
-                                key={index}
-                                className={cx('select-item')}
-                                onMouseDown={() => {
-                                    setSelected(item);
-                                    setSearchQuery(render(item));
-                                    if (onSelect) onSelect(item);
-                                    setIsDropdownOpen(false);
-                                }}
-                            >
-                                {render(item)}
-                            </div>
-                        ))}
+                        {filteredItems?.map((item, index) => {
+                            const classes = cx('select-item', {
+                                selected: selected === item,
+                            });
+                            return (
+                                <div
+                                    key={index}
+                                    className={classes}
+                                    onMouseDown={() => {
+                                        setSelected(item);
+                                        setSearchQuery(render(item));
+
+                                        setIsDropdownOpen(false);
+                                    }}
+                                >
+                                    {render(item)}
+                                </div>
+                            );
+                        })}
                     </div>
                 )}
             </div>
-            <div className={cx('err-mesage')}>{error}</div>
+            {validates && <div className={cx('err-mesage')}>{error}</div>}
         </div>
     );
 }

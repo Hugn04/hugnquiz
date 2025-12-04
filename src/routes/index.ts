@@ -14,7 +14,7 @@ import EditExample from '../pages/EditExample';
 import Profile from '../pages/Profile';
 // import ShareExample from '../pages/ShareExample';
 import MyFavorite from '../pages/MyFavorite';
-// import ChangePassword from '../pages/ChangePassword';
+import ChangePassword from '../pages/ChangePassword';
 // import HomeAdmin from '../pages/admins/HomeAdmin';
 import PreviewExample from '../pages/PreviewExample';
 import ContestPage from '../pages/Contest';
@@ -47,7 +47,7 @@ const privateRoutes: RouteType[] = [
     { path: routesConfig.myExam, component: MyExample },
     { path: routesConfig.editExample(), component: EditExample, props: { sideBarMini: true } },
     { path: routesConfig.profile(), layout: HomeLayout, component: Profile, props: { sideBarMini: true } },
-    // { path: routesConfig.changePassword, component: ChangePassword, layout: Account },
+    { path: routesConfig.changePassword, component: ChangePassword, layout: Account },
     { path: routesConfig.favorite, component: MyFavorite },
     // { path: routesConfig.message, component: MessagePage, props: { noPadding: true } },
     { path: routesConfig.createExample, component: CreateExample, props: { sideBarMini: true } },

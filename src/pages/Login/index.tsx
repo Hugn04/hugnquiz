@@ -70,7 +70,7 @@ function Login() {
                 </Button>
             </div>
             <div className={cx('login-google')}>
-                <LoginWithGoogle></LoginWithGoogle>
+                <LoginWithGoogle setLoginFalse={setLoginFalse}></LoginWithGoogle>
             </div>
             <div className={cx('forgot-pwr')}>
                 <Button

@@ -113,7 +113,7 @@ function ContestPage() {
         };
 
         const handleUnload = async () => {
-            if (shouldSendApi && numQuestionRef.current === example?.num_question) {
+            if (shouldSendApi) {
                 navigator.sendBeacon(`${import.meta.env.VITE_APP_API}update-score`, JSON.stringify(resultRef.current));
             }
         };

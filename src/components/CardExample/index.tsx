@@ -2,7 +2,7 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-regular-svg-icons/faClock';
 import 'reactjs-popup/dist/index.css';
-import { faCopy, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import { faEye, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import {
@@ -21,7 +21,7 @@ import { routes } from '../../config';
 import { useGlobalContext } from '../../hooks/useGlobalContext';
 import request from '../../utils/request';
 import { Link, useNavigate } from 'react-router-dom';
-import { copyTextToClipboard, getUserByEmail } from '../../helpers';
+import { getUserByEmail } from '../../helpers';
 import { useEffect, useState } from 'react';
 import Avatar from '../Avatar';
 import type { Example } from '../../types/exam';
@@ -72,7 +72,7 @@ function CardExample({ getExample = () => {}, className, myExample, example }: C
             </div>
             <p className={cx('title')}>{example.name}</p>
             <div className={cx('example-info')}>
-                {myExample ?? (
+                {!myExample && (
                     <Link
                         to={routes.profile(`${getUserByEmail(example.user.email)}!${example.user_id}`)}
                         state={{ email: example.user.email }}
@@ -126,49 +126,6 @@ function CardExample({ getExample = () => {}, className, myExample, example }: C
                     {example.sector.name}
                 </Button>
             </div>
-            {myExample && (
-                <div className={cx('action-crud')}>
-                    <Tippy content="Sửa đề thi" placement="bottom">
-                        <Button
-                            to={routes.editExample(example.id.toString())}
-                            icon={faPenToSquare}
-                            iconColor="var(--primary)"
-                        ></Button>
-                    </Tippy>
-                    <Tippy content="Sao chép" placement="bottom">
-                        <Button
-                            icon={faCopy}
-                            onClick={() => {
-                                copyTextToClipboard(`${import.meta.env.VITE_APP_DOMAIN}/share/${example.id}`);
-                            }}
-                            iconColor="var(--text-color)"
-                        ></Button>
-                    </Tippy>
-                    <Tippy content="Xóa" placement="bottom">
-                        <Button
-                            onClick={() => {
-                                popupWarning({
-                                    message: 'Bạn có chắc muốn xóa đề thi này không ?',
-                                    accecpt: () => {
-                                        const toastDelete = toastPromise('Đang xóa đề thi...');
-                                        request
-                                            .delete('/delete-myexample', { params: { id: example.id } })
-                                            .then(() => {
-                                                toastDelete.success('Xóa thành công !');
-                                                getExample();
-                                            })
-                                            .catch(() => {
-                                                toastDelete.error('Xóa thất bại !');
-                                            });
-                                    },
-                                });
-                            }}
-                            icon={faTrashCan}
-                            iconColor="#f44c44"
-                        ></Button>
-                    </Tippy>
-                </div>
-            )}
 
             <div className={cx('action')}>
                 <Button
@@ -180,14 +137,57 @@ function CardExample({ getExample = () => {}, className, myExample, example }: C
                 >
                     Xem đề thi
                 </Button>
-
-                {myExample || (
-                    <div>
-                        <Tippy content="Sao chép" placement="bottom">
+                {myExample ? (
+                    <div className={cx('action-crud')}>
+                        <Tippy content="Sửa đề thi" placement="bottom">
                             <Button
-                                icon={faCopy}
+                                to={routes.editExample(example.id.toString())}
+                                icon={faPenToSquare}
+                                iconColor="var(--primary)"
+                            ></Button>
+                        </Tippy>
+                        <Tippy content="Xem đề thi" placement="bottom">
+                            <Button
+                                icon={faEye}
                                 onClick={() => {
-                                    copyTextToClipboard(`${import.meta.env.VITE_APP_DOMAIN}/share/${example.id}`);
+                                    const domain = new URL(import.meta.env.VITE_APP_API).origin;
+                                    window.location.href = `${domain}/share/${example.id}`;
+                                }}
+                                iconColor="var(--text-color)"
+                            ></Button>
+                        </Tippy>
+                        <Tippy content="Xóa" placement="bottom">
+                            <Button
+                                onClick={() => {
+                                    popupWarning({
+                                        message: 'Bạn có chắc muốn xóa đề thi này không ?',
+                                        accecpt: () => {
+                                            const toastDelete = toastPromise('Đang xóa đề thi...');
+                                            request
+                                                .delete('/delete-myexample', { params: { id: example.id } })
+                                                .then(() => {
+                                                    toastDelete.success('Xóa thành công !');
+                                                    getExample();
+                                                })
+                                                .catch(() => {
+                                                    toastDelete.error('Xóa thất bại !');
+                                                });
+                                        },
+                                    });
+                                }}
+                                icon={faTrashCan}
+                                iconColor="#f44c44"
+                            ></Button>
+                        </Tippy>
+                    </div>
+                ) : (
+                    <div>
+                        <Tippy content="Xem đề thi" placement="bottom">
+                            <Button
+                                icon={faEye}
+                                onClick={() => {
+                                    const domain = new URL(import.meta.env.VITE_APP_API).origin;
+                                    window.location.href = `${domain}/share/${example.id}`;
                                 }}
                                 iconColor="var(--text-color)"
                             ></Button>

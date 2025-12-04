@@ -8,8 +8,6 @@ import { getObjStyleClassName } from '../../../../helpers';
 import { convertExampleToText } from '../../../../helpers';
 import images from '../../../../assets/images';
 import { routes } from '../../../../config';
-import { useEffect } from 'react';
-import request from '../../../../utils/request';
 import type { PartQuestion } from '../../../../types/exam';
 import { useAppSelector } from '../../../../redux/hooks';
 const cx = classNames.bind(styles);
@@ -84,14 +82,14 @@ function PopupFinally({
         }
     };
 
-    useEffect(() => {
-        request
-            .post('update-score', { example_id: exampleResult.id, score: Math.round(score * 10) / 10 })
-            .then((data) => {
-                console.log(data);
-            })
-            .catch((err) => console.log(err));
-    }, [exampleResult.id, score]);
+    // useEffect(() => {
+    //     request
+    //         .post('update-score', { example_id: exampleResult.id, score: Math.round(score * 10) / 10 })
+    //         .then((data) => {
+    //             console.log(data);
+    //         })
+    //         .catch((err) => console.log(err));
+    // }, [exampleResult.id, score]);
     return (
         <Popup open modal onOpen={onOpen} onClose={handleRetry} {...{ contentStyle, overlayStyle, arrowStyle }}>
             <div className={cx('wrapper')}>

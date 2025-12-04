@@ -1,7 +1,7 @@
 import { GoogleLogin, type CredentialResponse } from '@react-oauth/google';
 import { useAuth } from '../hooks/useAuth';
 
-const LoginWithGoogle: React.FC = () => {
+const LoginWithGoogle = ({ setLoginFalse }: { setLoginFalse: (value: React.SetStateAction<boolean>) => void }) => {
     const { login } = useAuth();
     const handleSuccess = async (credentialResponse: CredentialResponse) => {
         const id_token = credentialResponse.credential;
@@ -9,8 +9,9 @@ const LoginWithGoogle: React.FC = () => {
             console.error('Không lấy được id_token từ Google');
             return;
         }
-
+        setLoginFalse(true);
         login(id_token);
+        setLoginFalse(false);
     };
 
     return (
