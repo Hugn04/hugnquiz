@@ -48,7 +48,9 @@ const Input = forwardRef<InputRef, InputProps>(
         const classes = cx('input-group', { red: error });
         const debounceValue = useDebounce(inputValue, debouncedTime);
         const isFirstRender = useRef(true);
-
+        useEffect(() => {
+            if (handleDebounce) handleDebounce(defaultValue);
+        }, []);
         const validate = useCallback(
             //isClick is Button component click
             (isClick = false): string | false => {

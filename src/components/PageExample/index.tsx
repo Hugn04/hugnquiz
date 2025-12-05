@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import type { Example, Links, Pagegination, Sector } from '../../types/exam';
 import images from '../../assets/images';
 import Select from '../Select';
+import { useSearchParams } from 'react-router-dom';
 const cx = classNames.bind(styles);
 type Page = {
     prevPageUrl: string | null;
@@ -19,19 +20,55 @@ type Page = {
 type PageExampleProps = {
     url: 'get-example' | 'get-myexample' | 'get-favorite';
 };
+
+type FilterType = {
+    search: string;
+    sector: string;
+    orderBy: 'count_test' | 'updated_at';
+    sort: 'desc' | 'asc';
+    page: string;
+};
+
+type OrderType = { name: string; value: 'count_test' | 'updated_at' };
+
+const orderList: OrderType[] = [
+    { name: 'Số lượt thi', value: 'count_test' },
+    { name: 'Ngày tạo', value: 'updated_at' },
+];
+
 function PageExample({ url = 'get-favorite' }: PageExampleProps) {
     const [page, setPage] = useState<Page>({
         prevPageUrl: null,
         nextPageUrl: null,
         groupPage: [],
     });
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    // const page = searchParams.get('page');
+
     const [sectorList, setSectorList] = useState<Sector[]>([]);
     const [listMyExample, setListMyExample] = useState<Example[]>([]);
-    const [search, setSearch] = useState({ search: '', sector: '', test: '', date: '' });
+    const [search, setSearch] = useState<FilterType>({
+        search: searchParams.get('search') ?? '',
+        sector: searchParams.get('sector') ?? '',
+        orderBy: (searchParams.get('orderBy') as 'count_test' | 'updated_at') ?? 'count_test',
+        sort: (searchParams.get('sort') as 'asc' | 'desc') ?? 'desc',
+        page: searchParams.get('page') ?? '1',
+    });
+    // const [sortList, setSortList] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const getExample = useCallback(
         async (pageUrl: string = url) => {
             setIsLoading(true);
+            setSearchParams((params) => {
+                const merged = new URLSearchParams(params);
+
+                Object.entries(search).forEach(([key, value]) => {
+                    merged.set(key, value);
+                });
+
+                return merged;
+            });
             try {
                 const example = await request.get(pageUrl, { params: search });
                 handleChangePage(example.data);
@@ -67,11 +104,15 @@ function PageExample({ url = 'get-favorite' }: PageExampleProps) {
         };
         fetchSector();
     }, []);
+    const defaultOrder = orderList.filter((item) => {
+        return item.value === search.orderBy;
+    });
     return (
         <div className={cx('wrapper')}>
             <div className={cx('filter')}>
                 <Input
                     title="Tìm kiếm"
+                    defaultValue={searchParams.get('search') || ''}
                     placeholder="Tìm theo tên"
                     handleDebounce={(value) => {
                         setSearch((prev) => ({ ...prev, search: value }));
@@ -92,25 +133,21 @@ function PageExample({ url = 'get-favorite' }: PageExampleProps) {
                             setSearch((prev) => ({ ...prev, sector: item ? String(item.id) : '' }));
                         }}
                     />
-                    <Select<{ name: string; value: 'asc' | 'desc' }>
-                        canClose
-                        title="Ngày tạo"
-                        items={[
-                            { name: 'Mới tới cũ', value: 'desc' },
-                            { name: 'Cũ tới mới', value: 'asc' },
-                        ]}
+                    <Select<OrderType>
+                        title="Sắp xếp theo"
+                        defaultValue={defaultOrder[0]}
+                        items={orderList}
                         placeholder="Lọc ngày tạo"
                         filter={(items, search) =>
                             items.filter((i) => i.name.toLowerCase().includes(search.toLowerCase()))
                         }
                         render={(item) => item.name}
                         onSelect={(item) => {
-                            setSearch((prev) => ({ ...prev, date: item ? String(item.value) : '' }));
+                            setSearch((prev) => ({ ...prev, orderBy: item ? item.value : 'count_test' }));
                         }}
                     />
                     <Select<{ name: string; value: 'asc' | 'desc' }>
-                        canClose
-                        title="Số lượt thi"
+                        defaultValue={{ name: 'Giảm dần', value: 'desc' }}
                         filter={(items) => items}
                         items={[
                             { name: 'Tăng dần', value: 'asc' },
@@ -119,7 +156,7 @@ function PageExample({ url = 'get-favorite' }: PageExampleProps) {
                         placeholder="Lọc số lượt thi"
                         render={(item) => item.name}
                         onSelect={(item) => {
-                            setSearch((prev) => ({ ...prev, test: item ? String(item.value) : '' }));
+                            setSearch((prev) => ({ ...prev, sort: item ? item.value : 'desc' }));
                         }}
                     />
                 </div>
@@ -156,7 +193,7 @@ function PageExample({ url = 'get-favorite' }: PageExampleProps) {
                     variant="primary"
                     disable={!page.prevPageUrl}
                     onClick={() => {
-                        getExample(page.prevPageUrl ?? '');
+                        setSearch((prev) => ({ ...prev, page: String(+prev.page - 1) }));
                     }}
                 >
                     Trang trước
@@ -169,7 +206,11 @@ function PageExample({ url = 'get-favorite' }: PageExampleProps) {
                                 variant="primary"
                                 key={index}
                                 onClick={() => {
-                                    getExample(page.url ?? '');
+                                    if (page.url) {
+                                        const params = new URL(page.url).searchParams;
+                                        const pageNumber = params.get('page');
+                                        setSearch((prev) => ({ ...prev, page: String(pageNumber) }));
+                                    }
                                 }}
                             >
                                 {page.label}
@@ -181,7 +222,7 @@ function PageExample({ url = 'get-favorite' }: PageExampleProps) {
                     variant="primary"
                     disable={!page.nextPageUrl}
                     onClick={() => {
-                        getExample(page.nextPageUrl ?? '');
+                        setSearch((prev) => ({ ...prev, page: String(+prev.page + 1) }));
                     }}
                 >
                     Trang tiếp
