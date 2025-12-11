@@ -1,7 +1,7 @@
 .wrapper {
     position: relative;
     width: 280px;
-    z-index: 999;
+    z-index: 10;
     transition: transform 0.5s ease, background-color ease 0.5s, width 0.5s ease !important;
     height: 100%;
     // background-color: var(--background-color);

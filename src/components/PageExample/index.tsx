@@ -26,7 +26,6 @@ type FilterType = {
     sector: string;
     orderBy: 'count_test' | 'updated_at';
     sort: 'desc' | 'asc';
-    page: string;
 };
 
 type OrderType = { name: string; value: 'count_test' | 'updated_at' };
@@ -44,7 +43,7 @@ function PageExample({ url = 'get-favorite' }: PageExampleProps) {
     });
     const [searchParams, setSearchParams] = useSearchParams();
 
-    // const page = searchParams.get('page');
+    // const page = searchParams.get('page')
 
     const [sectorList, setSectorList] = useState<Sector[]>([]);
     const [listMyExample, setListMyExample] = useState<Example[]>([]);
@@ -53,24 +52,29 @@ function PageExample({ url = 'get-favorite' }: PageExampleProps) {
         sector: searchParams.get('sector') ?? '',
         orderBy: (searchParams.get('orderBy') as 'count_test' | 'updated_at') ?? 'count_test',
         sort: (searchParams.get('sort') as 'asc' | 'desc') ?? 'desc',
-        page: searchParams.get('page') ?? '1',
+        // page: searchParams.get('page') ?? '1',
     });
+
     // const [sortList, setSortList] = useState({});
+    // useEffect(() => {
+    //     const pageNumber = +(searchParams.get('page') ?? '1');
+    //     console.log(page.groupPage[pageNumber - 1].url, searchParams.get('page'));
+    // }, [searchParams]);
     const [isLoading, setIsLoading] = useState(false);
+    const isValidUrl = (url: string): boolean => {
+        try {
+            new URL(url);
+            return true;
+        } catch {
+            return false;
+        }
+    };
+
     const getExample = useCallback(
-        async (pageUrl: string = url) => {
+        async (page?: string) => {
             setIsLoading(true);
-            setSearchParams((params) => {
-                const merged = new URLSearchParams(params);
-
-                Object.entries(search).forEach(([key, value]) => {
-                    merged.set(key, value);
-                });
-
-                return merged;
-            });
             try {
-                const example = await request.get(pageUrl, { params: search });
+                const example = await request.get(url, { params: page ? { ...search, page: page } : search });
                 handleChangePage(example.data);
                 setIsLoading(false);
             } catch (error) {
@@ -90,9 +94,25 @@ function PageExample({ url = 'get-favorite' }: PageExampleProps) {
         setListMyExample(example.data);
     };
     useEffect(() => {
-        getExample();
+        getExample(searchParams.get('page') ?? '1');
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [search]);
+    }, [search, searchParams]);
+    const handleChangeNumberPage = (url: string) => {
+        if (isValidUrl(url)) {
+            const params = new URL(url).searchParams;
+            const pageNumber = params.get('page') ?? '1';
+            setSearchParams(
+                (params) => {
+                    const merged = new URLSearchParams(params);
+                    merged.set('page', pageNumber);
+
+                    return merged;
+                },
+                { replace: false },
+            );
+            getExample(pageNumber);
+        }
+    };
     useEffect(() => {
         const fetchSector = async () => {
             try {
@@ -115,24 +135,23 @@ function PageExample({ url = 'get-favorite' }: PageExampleProps) {
                     defaultValue={searchParams.get('search') || ''}
                     placeholder="Tìm theo tên"
                     handleDebounce={(value) => {
+                        // updateURL({ ...search, search: value, page: '1' });
                         setSearch((prev) => ({ ...prev, search: value }));
                     }}
                 ></Input>
+                <Select<Sector>
+                    canClose
+                    title="Ngành"
+                    items={sectorList}
+                    placeholder="Lọc theo ngành"
+                    filter={(items, search) => items.filter((i) => i.name.toLowerCase().includes(search.toLowerCase()))}
+                    render={(item) => item.name}
+                    onSelect={(item) => {
+                        setSearch((prev) => ({ ...prev, sector: item ? String(item.id) : '' }));
+                    }}
+                />
 
                 <div className={cx('sort')}>
-                    <Select<Sector>
-                        canClose
-                        title="Ngành"
-                        items={sectorList}
-                        placeholder="Lọc theo ngành"
-                        filter={(items, search) =>
-                            items.filter((i) => i.name.toLowerCase().includes(search.toLowerCase()))
-                        }
-                        render={(item) => item.name}
-                        onSelect={(item) => {
-                            setSearch((prev) => ({ ...prev, sector: item ? String(item.id) : '' }));
-                        }}
-                    />
                     <Select<OrderType>
                         title="Sắp xếp theo"
                         defaultValue={defaultOrder[0]}
@@ -193,7 +212,7 @@ function PageExample({ url = 'get-favorite' }: PageExampleProps) {
                     variant="primary"
                     disable={!page.prevPageUrl}
                     onClick={() => {
-                        setSearch((prev) => ({ ...prev, page: String(+prev.page - 1) }));
+                        if (page.prevPageUrl) handleChangeNumberPage(page.prevPageUrl);
                     }}
                 >
                     Trang trước
@@ -206,11 +225,7 @@ function PageExample({ url = 'get-favorite' }: PageExampleProps) {
                                 variant="primary"
                                 key={index}
                                 onClick={() => {
-                                    if (page.url) {
-                                        const params = new URL(page.url).searchParams;
-                                        const pageNumber = params.get('page');
-                                        setSearch((prev) => ({ ...prev, page: String(pageNumber) }));
-                                    }
+                                    if (page.url) handleChangeNumberPage(page.url);
                                 }}
                             >
                                 {page.label}
@@ -222,7 +237,7 @@ function PageExample({ url = 'get-favorite' }: PageExampleProps) {
                     variant="primary"
                     disable={!page.nextPageUrl}
                     onClick={() => {
-                        setSearch((prev) => ({ ...prev, page: String(+prev.page + 1) }));
+                        if (page.nextPageUrl) handleChangeNumberPage(page.nextPageUrl);
                     }}
                 >
                     Trang tiếp

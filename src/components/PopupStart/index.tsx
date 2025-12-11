@@ -5,7 +5,7 @@ import { useRef, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styles from './PopupStart.module.scss';
-import Input, { type InputRef } from '../Input';
+import { type InputRef } from '../Input';
 import Button from '../Button';
 import Popup from 'reactjs-popup';
 import { getObjStyleClassName } from '../../helpers';
@@ -45,7 +45,7 @@ function PopupStart({ trigger, idExample = 0 }: PopupStartProps) {
                         <label>Thi thử</label>
                     </div>
                 </div>
-                <div className={cx('time')}>
+                {/* <div className={cx('time')}>
                     <Input
                         title="Tự động chuyển câu"
                         type="select"
@@ -58,7 +58,7 @@ function PopupStart({ trigger, idExample = 0 }: PopupStartProps) {
                             { title: '3s', value: 3 },
                         ]}
                     ></Input>
-                </div>
+                </div> */}
 
                 <Button
                     onClick={() => {

@@ -1,91 +1,101 @@
 import classNames from 'classnames/bind';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import images from '../../assets/images';
 import styles from './Home.module.scss';
 import Button from '../../components/Button';
 import { useAuth } from '../../hooks/useAuth';
 import { routes } from '../../config';
-import Slider from 'react-slick';
+
 const cx = classNames.bind(styles);
+
 function Home() {
     const { user } = useAuth();
-    const settings = {
-        dots: true,
-        // infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        // Thêm hai thuộc tính này để slider tự động chạy
-        autoplay: true,
-        autoplaySpeed: 3000,
-    };
-    // const imgs = [images.slier1, images.slier2, images.slier3];
-    const imgs = [
-        'https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/dbb528128425071.6155bf559c93c.png',
-        'https://tuhocdohoa.vn/wp-content/uploads/2018/08/TT025-le-hoi-trung-thu-viet-nam-01.jpg',
-        'https://static.vinwonders.com/production/ruoc-den-trung-thu-1.jpg',
-    ];
-    return (
-        <>
-            <div className={cx('wraper')}>
-                <img className={cx('background')} src={images.background} alt="Background"></img>
-                <div className={cx('main')}>
-                    <div className={cx('container', 'left')}>
-                        <img
-                            className={cx('logo')}
-                            alt="Logo"
-                            src="https://png.pngtree.com/png-clipart/20210310/original/pngtree-lunar-new-year-lion-dance-border-auspicious-clouds-png-image_5947851.png"
-                        ></img>
 
-                        <div className={cx('content')}>
-                            <h1>Chinh phục kỳ thi, vững bước cùng HUBT!</h1>
-                            <br></br>
-                            <p>
-                                Ôn luyện hiệu quả với ngân hàng câu hỏi đa dạng, giải thích chi tiết. Nền tảng của chúng
-                                tôi là bước đệm vững chắc giúp bạn tự tin đạt điểm cao và sẵn sàng cho môi trường học
-                                tập thực tiễn tại Đại học Kinh doanh và Công nghệ Hà Nội.
-                            </p>
-                        </div>
-                        <div className={cx('action')}>
-                            <Button to={routes.exam} className={cx('button')}>
-                                Bắt đầu ôn luyện ngày
+    const stats = [
+        { number: '10,000+', label: 'Câu hỏi' },
+        // { number: '5,000+', label: 'Học viên' },
+        { number: '95%', label: 'Tỷ lệ đỗ' },
+        // { number: '24/7', label: 'Hỗ trợ' },
+    ];
+
+    return (
+        <div className={cx('wrapper')}>
+            {/* Hero Section */}
+            <section className={cx('hero')}>
+                <div className={cx('hero-decoration')}>
+                    <img
+                        className={cx('decoration-logo')}
+                        src="https://th.bing.com/th/id/R.9819eaace9a5844542a4880ada1be306?rik=jNn%2bsGdTJl%2fg1Q&pid=ImgRaw&r=0"
+                        alt=""
+                    />
+                </div>
+
+                <div className={cx('hero-content')}>
+                    <div className={cx('hero-badge')}>
+                        <span className={cx('badge-icon')}>🎓</span>
+                        <span>Nền tảng ôn thi hàng đầu</span>
+                    </div>
+
+                    <h1 className={cx('hero-title')}>
+                        Chinh phục kỳ thi,
+                        <br />
+                        <span className={cx('highlight')}>vững bước cùng HUBT</span>
+                    </h1>
+
+                    <p className={cx('hero-description')}>
+                        Ôn luyện hiệu quả với ngân hàng câu hỏi đa dạng, giải thích chi tiết. Nền tảng của chúng tôi là
+                        bước đệm vững chắc giúp bạn tự tin đạt điểm cao và sẵn sàng cho môi trường học tập thực tiễn tại
+                        Đại học Kinh doanh và Công nghệ Hà Nội.
+                    </p>
+
+                    <div className={cx('hero-actions')}>
+                        <Button to={routes.exam} className={cx('btn-primary')}>
+                            <span>Bắt đầu ôn luyện ngay</span>
+                            <span className={cx('btn-icon')}>→</span>
+                        </Button>
+                        {!user && (
+                            <Button to={routes.login} className={cx('btn-secondary')}>
+                                Đăng nhập
                             </Button>
-                            {!user && (
-                                <>
-                                    <Button to={routes.login} className={cx('button')}>
-                                        Đăng nhập
-                                    </Button>
-                                </>
-                            )}
-                        </div>
+                        )}
                     </div>
-                    <div className={cx('container', 'right')}>
-                        <img className={cx('logo')} alt="Logo" src={images.logo2}></img>
-                        <div className={cx('slider-container')}>
-                            <Slider {...settings}>
-                                {imgs.map((src, index) => (
-                                    <div key={index}>
-                                        <img
-                                            src={src}
-                                            style={{ width: 700, height: 365, objectFit: 'cover' }}
-                                            alt={`slide-${index}`}
-                                            className={cx('img')}
-                                        />
-                                    </div>
-                                ))}
-                            </Slider>
-                        </div>
+
+                    {/* Stats */}
+                    <div className={cx('hero-stats')}>
+                        {stats.map((stat, index) => (
+                            <div key={index} className={cx('stat-item')}>
+                                <div className={cx('stat-number')}>{stat.number}</div>
+                                <div className={cx('stat-label')}>{stat.label}</div>
+                            </div>
+                        ))}
                     </div>
                 </div>
-                <div className={cx('footer')}>
-                    <div className={cx('copyright-footer')}>
-                        Trung Thu – Tết đoàn viên, sum vầy bên ánh trăng rằm và tiếng trống múa lân rộn ràng.<br></br>
-                        6/10/2025<br></br>
+
+                <div className={cx('hero-decoration')}>
+                    <img
+                        className={cx('decoration-image')}
+                        src="https://img.pikbest.com/png-images/20191110/beautiful-cartoon-christmas-tree-gif_2515368.png!bw700"
+                        alt="Decoration"
+                    />
+                </div>
+            </section>
+
+            {/* Footer */}
+            <footer className={cx('footer')}>
+                <div className={cx('footer-content')}>
+                    <div className={cx('footer-logo')}>
+                        <img src={images.logo} alt="HUBT Logo" />
+                    </div>
+                    <div className={cx('footer-text')}>
+                        <p>
+                            Giáng Sinh – mùa lễ hội an lành, sum họp bên ánh đèn lung linh và giai điệu rộn ràng của
+                            những bản nhạc mừng mùa đông.
+                        </p>
+                        <p className={cx('copyright')}>© 2025 Hugn. All rights reserved.</p>
                     </div>
                 </div>
-            </div>
-        </>
+            </footer>
+        </div>
     );
 }
+
 export default Home;

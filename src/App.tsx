@@ -9,7 +9,6 @@ import AdminRoute from './components/AdminRoute';
 import { AuthProvider } from './providers/AuthProvider';
 import { GlobalProvider } from './providers/GlobalProvider';
 import './App.css';
-
 function App() {
     const [theme, setTheme] = useLocalStorage('theme-dark', false);
     useEffect(() => {
@@ -42,6 +41,7 @@ function App() {
         }
         return PageLayout;
     };
+
     return (
         <BrowserRouter>
             <GlobalProvider>

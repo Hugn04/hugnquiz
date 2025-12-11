@@ -27,7 +27,7 @@ function CreateExample() {
     // Take example
     const { user } = useAuth();
     const keyRef = useRef<InputRef>(null);
-    const typeRef = useRef<InputRef>(null);
+    const typeRef = useRef<SelectRef<{ name: string }>>(null);
     // end
     const { isMobile } = useBreakpoint();
 
@@ -156,13 +156,19 @@ function CreateExample() {
                             {/* Take example */}
                             {user?.role === 'admin' && (
                                 <div>
-                                    <Input ref={keyRef} title="Key"></Input>
-                                    {/* <Input
+                                    <Input style={{ marginBottom: '20px' }} ref={keyRef} title="Key"></Input>
+                                    <Select<{ name: string }>
                                         ref={typeRef}
-                                        title="Type"
-                                        type="select"
-                                        data={[{ title: 'EDUQUIZ' }, { title: 'PESTHUBT' }]}
-                                    ></Input> */}
+                                        title="Chọn ngành"
+                                        validates={{ require: 'Bắt buộc chọn ngành' }}
+                                        defaultValue={{ name: 'EDUQUIZ' }}
+                                        items={[{ name: 'EDUQUIZ' }, { name: 'PESTHUBT' }]}
+                                        placeholder="Chọn ngành"
+                                        filter={(items, search) =>
+                                            items.filter((i) => i.name.toLowerCase().includes(search.toLowerCase()))
+                                        }
+                                        render={(item) => item.name}
+                                    />
                                     <Button
                                         variant="primary"
                                         onClick={() => {
@@ -171,7 +177,7 @@ function CreateExample() {
                                                 .get('/getExampleQ', {
                                                     params: {
                                                         tagExample: keyRef.current?.getValue(),
-                                                        type: typeRef.current?.getValue(),
+                                                        type: typeRef.current?.getValue()?.name,
                                                     },
                                                 })
                                                 .then((data) => {
@@ -307,7 +313,7 @@ function CreateExample() {
                         <div className={cx('group-header')}>
                             <h1>Danh sách câu hỏi</h1>
                             <div className={cx('list')}>
-                                {partQuestions[curentPart]?.questions.map((question, index) => {
+                                {partQuestions[curentPart]?.questions.map((_, index) => {
                                     return (
                                         <Button
                                             key={index}

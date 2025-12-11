@@ -61,3 +61,13 @@
         align-items: center;
     }
 }
+@media only screen and (max-width: 600px) {
+    .page {
+        .group-page {
+            display: none;
+        }
+    }
+    .sort {
+        display: none;
+    }
+}

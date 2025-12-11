@@ -1,5 +1,4 @@
 import classNames from 'classnames/bind';
-import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { faCircleQuestion, faClipboardQuestion, faHeart, faHome } from '@fortawesome/free-solid-svg-icons';
@@ -50,15 +49,16 @@ const initMenu: MenuItem[] = [
         event: {
             to: routes.favorite,
         },
-    },
-    {
-        title: 'Tin nhắn',
-        icon: faFacebookMessenger,
-        event: {
-            to: routes.message,
-        },
         spacer: true,
     },
+    // {
+    //     title: 'Tin nhắn',
+    //     icon: faFacebookMessenger,
+    //     event: {
+    //         to: routes.message,
+    //     },
+    //     spacer: true,
+    // },
     {
         title: 'Trang chủ của trường',
         event: {

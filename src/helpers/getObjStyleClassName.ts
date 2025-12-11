@@ -1,27 +1,40 @@
-function toCamelCase(str) {
-    return str.replace(/-([a-z])/g, function (match, letter) {
-        return letter.toUpperCase();
-    });
+function toCamelCase(str: string): string {
+    return str.replace(/-([a-z])/g, (_, char) => char.toUpperCase());
 }
 
-function getObjStyleClassName(className) {
+function getObjStyleClassName(className: string): Record<string, string> {
     const sheets = document.styleSheets;
-    let result = {};
+    const result: Record<string, string> = {};
 
     for (let i = 0; i < sheets.length; i++) {
-        const rules = sheets[i].cssRules || sheets[i].rules;
+        const sheet = sheets[i];
+
+        let rules: CSSRuleList | undefined;
+        try {
+            // Một số stylesheet cross-origin sẽ lỗi khi truy cập
+            rules = sheet.cssRules;
+        } catch {
+            continue;
+        }
+
+        if (!rules) continue;
 
         for (let j = 0; j < rules.length; j++) {
-            if (rules[j].selectorText === `.${className}`) {
-                const style = rules[j].style;
+            const rule = rules[j] as CSSStyleRule;
+
+            if (rule.selectorText === `.${className}`) {
+                const style = rule.style;
+
                 for (let k = 0; k < style.length; k++) {
-                    const propertyName = style.item(k);
-                    const camelCaseName = toCamelCase(propertyName);
-                    result[camelCaseName] = style.getPropertyValue(propertyName);
+                    const property = style.item(k);
+                    const camelName = toCamelCase(property);
+                    result[camelName] = style.getPropertyValue(property);
                 }
             }
         }
     }
+
     return result;
 }
+
 export default getObjStyleClassName;

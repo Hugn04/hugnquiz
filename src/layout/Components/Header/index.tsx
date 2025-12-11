@@ -1,8 +1,8 @@
 import classNames from 'classnames/bind';
 import { faCircleUser, faSquarePlus } from '@fortawesome/free-regular-svg-icons';
 import Tippy from '@tippyjs/react/headless';
-import { useEffect, useRef, useState } from 'react';
-import { createSearchParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
     faBars,
     faCircleHalfStroke,
@@ -10,10 +10,9 @@ import {
     faEllipsisVertical,
     faLock,
     faRightFromBracket,
-    faSearch,
+    faSnowflake,
     faUserPlus,
     faUserTie,
-    // faUserTie,
 } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './Header.module.scss';
@@ -24,29 +23,31 @@ import { useAuth } from '../../../hooks/useAuth';
 import { routes } from '../../../config';
 import Avatar from '../../../components/Avatar';
 import { getMessageRole } from '../../../helpers/roleController';
+import Snowfall from 'react-snowfall';
+import { useLocalStorage } from '../../../hooks/useLocalStorage';
 
 const cx = classNames.bind(styles);
 type HeaderProps = { navBar?: boolean; onToggleSideBar?: () => void; searchMobile?: boolean };
 
-function Header({ navBar, onToggleSideBar, searchMobile }: HeaderProps) {
+function Header({ navBar, onToggleSideBar }: HeaderProps) {
     const [visibleModel, setVisibleModel] = useState(false);
-    const searchRef = useRef<HTMLInputElement>(null);
-    const btnSearch = useRef<HTMLButtonElement>(null);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [snow, setSnow] = useLocalStorage<boolean>('snow', true);
+    // const searchRef = useRef<HTMLInputElement>(null);
+    // const btnSearch = useRef<HTMLButtonElement>(null);
+    const [, setIsAdmin] = useState(false);
     const { user, logout, auth } = useAuth();
-    const navigate = useNavigate();
-    const [params] = useSearchParams();
+    // const navigate = useNavigate();
+    // const [params] = useSearchParams();
 
-    const [searchValue, setSearchValue] = useState(params.get('search') || '');
+    // const [searchValue, setSearchValue] = useState(params.get('search') || '');
 
-    const styleSearch = { searchMobile: searchMobile };
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            btnSearch?.current?.click();
-        }
-    };
-    const [temp] = useState([
+    // const styleSearch = { searchMobile: searchMobile };
+    // const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    //     if (event.key === 'Enter') {
+    //         btnSearch?.current?.click();
+    //     }
+    // };
+    const [temp, setTemp] = useState([
         {
             title: 'Chuyển nền',
             icon: faCircleHalfStroke,
@@ -54,6 +55,17 @@ function Header({ navBar, onToggleSideBar, searchMobile }: HeaderProps) {
                 onClick() {
                     const classList = document.body.classList;
                     classList.toggle('theme-dark');
+                },
+            },
+        },
+        {
+            title: 'Bật tắt tuyết',
+            icon: faSnowflake,
+            event: {
+                onClick() {
+                    setSnow((data) => {
+                        return !data;
+                    });
                 },
             },
         },
@@ -79,6 +91,52 @@ function Header({ navBar, onToggleSideBar, searchMobile }: HeaderProps) {
             },
         },
     ]);
+    useEffect(() => {
+        setTemp([
+            {
+                title: 'Chuyển nền',
+                icon: faCircleHalfStroke,
+                event: {
+                    onClick() {
+                        const classList = document.body.classList;
+                        classList.toggle('theme-dark');
+                    },
+                },
+            },
+            {
+                title: 'Bật tắt tuyết',
+                icon: faSnowflake,
+                event: {
+                    onClick() {
+                        setSnow((data) => {
+                            return !data;
+                        });
+                    },
+                },
+            },
+            {
+                title: 'Thông tin tài khoản',
+                icon: faCircleInfo,
+                event: {
+                    to: routes.profile('this'),
+                },
+            },
+            {
+                title: 'Đổi mật khẩu',
+                icon: faLock,
+                event: {
+                    to: routes.changePassword,
+                },
+            },
+            {
+                title: 'Đăng xuất',
+                icon: faRightFromBracket,
+                event: {
+                    onClick: logout,
+                },
+            },
+        ]);
+    }, [snow]);
     const [menus, setMenus] = useState(temp);
     useEffect(() => {
         auth(false);
@@ -101,8 +159,23 @@ function Header({ navBar, onToggleSideBar, searchMobile }: HeaderProps) {
             });
         }
     }, [auth, temp, user]);
+    const imageSnow = useMemo(() => {
+        const images = [
+            'https://png.pngtree.com/png-clipart/20230531/original/pngtree-illustration-of-snowflakes-png-image_9174384.png',
+            // 'https://png.pngtree.com/png-clipart/20201010/ourmid/pngtree-hand-drawn-snowflake-clipart-elements-png-image_2358520.jpg',
+            // 'https://tse3.mm.bing.net/th/id/OIP.iOt8hcGnhRGgZ3trM-UZmAHaHa?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3',
+        ];
+        const arrImg: HTMLImageElement[] = [];
+        images.forEach((item) => {
+            const img = new Image();
+            img.src = item; // link ảnh của bạn
+            arrImg.push(img);
+        });
+        return arrImg;
+    }, []);
     return (
         <div className={cx('wraper')}>
+            {snow && <Snowfall radius={[5, 20]} images={imageSnow} style={{ zIndex: '999' }} snowflakeCount={30} />}
             <div className={cx('header-logo')}>
                 <Button className={cx('toogle-menu')} onClick={onToggleSideBar} size="large" icon={faBars}></Button>
                 <img src={images.logo} alt="Logo"></img>
@@ -110,7 +183,16 @@ function Header({ navBar, onToggleSideBar, searchMobile }: HeaderProps) {
                     <h1 className={cx('header-title')}>{import.meta.env.VITE_APP_NAME}</h1>
                 </Link>
             </div>
-            <div className={cx('search', styleSearch)}>
+            {/* <Button
+                onClick={() => {
+                    setSnow(!snow);
+                }}
+                variant={snow ? 'primary' : 'outline'}
+                icon={isMobile ? faSnowflake : undefined}
+            >
+                {`${snow ? 'Tắt tuyết' : 'Bật tuyết'}`}
+            </Button> */}
+            {/* <div className={cx('search', styleSearch)}>
                 <input
                     ref={searchRef}
                     value={searchValue}
@@ -136,7 +218,7 @@ function Header({ navBar, onToggleSideBar, searchMobile }: HeaderProps) {
                     className={cx('icon')}
                     icon={faSearch}
                 ></Button>
-            </div>
+            </div> */}
             <div className={cx('action')}>
                 {navBar && (
                     <div className={cx('nav-bar')}>
@@ -153,16 +235,15 @@ function Header({ navBar, onToggleSideBar, searchMobile }: HeaderProps) {
                 )}
                 {user ? (
                     <>
-                        {user.role === 'admin' && (
-                            <Button
-                                to={routes.createExample}
-                                className={cx('create-exam')}
-                                leftIcon={faSquarePlus}
-                                variant="primary"
-                            >
-                                Tạo đề thi
-                            </Button>
-                        )}
+                        <Button
+                            to={routes.createExample}
+                            className={cx('create-exam')}
+                            leftIcon={faSquarePlus}
+                            variant="primary"
+                        >
+                            Tạo đề thi
+                        </Button>
+
                         <Tippy
                             visible={visibleModel}
                             onClickOutside={() => setVisibleModel(false)}

@@ -199,7 +199,7 @@ function EditExample() {
                     <div className={cx('group-question', 'box')}>
                         <div className={cx('question')}>
                             {/* Handle change question */}
-                            {partQuestions[curentPart]?.questions.map((item, index) => {
+                            {partQuestions[curentPart]?.questions.map((_, index) => {
                                 return (
                                     <Button
                                         key={index}

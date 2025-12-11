@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState, type ChangeEvent, type KeyboardEvent } from 'react';
+import { forwardRef, useImperativeHandle, useRef, useState, type ChangeEvent, type KeyboardEvent } from 'react';
 import classNames from 'classnames/bind';
 import styles from './OTPInput.module.scss';
 

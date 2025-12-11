@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 
-const copyTextToClipboard = (text) => {
+const copyTextToClipboard = (text: string) => {
     if (!navigator.clipboard) {
         toast.error('Trình duyệt không hỗ trợ sao chép clipboard');
         return;
