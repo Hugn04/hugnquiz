@@ -4,12 +4,16 @@ import classNames from 'classnames/bind';
 import styles from './NavList.module.scss';
 const cx = classNames.bind(styles);
 
-interface MenuItem {
+export interface MenuItem {
     title: string;
     icon?: IconProp;
     spacer?: boolean;
     active?: boolean;
-    event?: any;
+    event?: {
+        to?: string;
+        href?: string;
+        onClick?: () => void;
+    };
 }
 
 interface NavListProps {
@@ -25,6 +29,7 @@ const NavList = ({ menus, classNameButton }: NavListProps) => {
                     spacer: item.spacer,
                     active: item.active,
                 });
+
                 return (
                     <Button key={index} {...item.event} className={classes} leftIcon={item.icon}>
                         <span className={cx('title')}>{item.title}</span>

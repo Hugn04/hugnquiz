@@ -217,7 +217,7 @@ function EditExample() {
                                                 dispatch(changeQuestion(index));
                                             }
                                         }}
-                                        onKeyDown={(e) => {
+                                        onKeyDown={(e: React.KeyboardEvent<HTMLElement>) => {
                                             if (e.key === 'Delete') {
                                                 if (partQuestions[curentPart].questions.length <= 1) {
                                                     showToast('Không thể xóa hết câu hỏi trong một phần !');
@@ -277,28 +277,6 @@ function EditExample() {
 
                                             toastUpdate.error('Sửa đề thi thất bại !');
                                         }
-
-                                        // imageRef.current
-                                        //     ?.uploadImage()
-                                        //     .then((data) => {
-                                        //         const body = {
-                                        //             id: subject,
-                                        //             count_question,
-                                        //             name: nameExampleRef.current?.getValue(),
-                                        //             sector: sectorRef.current?.getValue()?.id,
-                                        //             credits: creditsRef.current?.getValue(),
-                                        //             question: partQuestions,
-                                        //             ...(data.url && { image: data.url }),
-                                        //         };
-                                        //         return request.post('/update-myexample', body);
-                                        //     })
-                                        //     .then(() => {
-                                        //         toastUpdate.success('Sửa đề thi thành công !');
-                                        //         navigate(routes.myExam);
-                                        //     })
-                                        //     .catch(() => {
-
-                                        //     });
                                     };
                                     setPopupWarning((prev) => ({
                                         ...prev,

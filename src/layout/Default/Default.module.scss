@@ -3,6 +3,7 @@
     display: flex;
     overflow: auto;
     background-color: var(--theme-color);
+    width: 100vw;
 }
 
 .content {
@@ -17,7 +18,7 @@
     width: 100vh;
     height: 100vh;
     background-color: rgba(127, 127, 127, 0.419);
-    z-index: 99;
+    z-index: 1;
     &.none {
         display: none;
     }

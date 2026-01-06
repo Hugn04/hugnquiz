@@ -1,6 +1,6 @@
 import type { Answer, PartQuestion, Question } from '../types/exam';
 
-const splitPart = (text: string): string[] => {
+export const splitPart = (text: string): string[] => {
     const delimiter = "\n'";
     const regex = new RegExp(`(${delimiter})`);
 

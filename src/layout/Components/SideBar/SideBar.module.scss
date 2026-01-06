@@ -12,6 +12,7 @@
 
 .sidebar {
     position: absolute;
+    pointer-events: all;
     height: 100%;
     padding: 8px 8px;
     background-color: var(--background-color);
@@ -52,6 +53,7 @@
         transform: translateX(-280px);
     }
     .wrapper {
+        pointer-events: none;
         width: 0;
         position: fixed;
     }

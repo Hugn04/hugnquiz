@@ -31,23 +31,13 @@ export interface BaseButtonProps {
     onClick?: () => void;
 }
 
-type ButtonAsLink = BaseButtonProps & {
-    to: string;
-    href?: never;
-} & React.AnchorHTMLAttributes<HTMLAnchorElement>;
+type ButtonAsLink = BaseButtonProps & React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
 // --- Kiểu cho thẻ a (liên kết ngoài)
-type ButtonAsAnchor = BaseButtonProps & {
-    href: string;
-    to?: never;
-} & React.AnchorHTMLAttributes<HTMLAnchorElement>;
-type ButtonAsButton = BaseButtonProps &
-    React.ButtonHTMLAttributes<HTMLButtonElement> & {
-        to?: never;
-        href?: never;
-    };
+type ButtonAsAnchor = BaseButtonProps & React.AnchorHTMLAttributes<HTMLAnchorElement>;
+type ButtonAsButton = BaseButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
 type ButtonProps = ButtonAsButton | ButtonAsLink | ButtonAsAnchor;
-const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((props, ref) => {
+const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement | null, ButtonProps>((props, ref) => {
     const {
         validateInput,
         leftIcon,
@@ -93,6 +83,7 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((p
         if (validateInput) {
             handleValidateInput(validateInput);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [validateInput]);
     if ('to' in props && to) {
         return (

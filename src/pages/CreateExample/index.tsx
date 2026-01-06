@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { changePart, changeQuestion, setEditPartQuestions } from '../../redux/slices/contestSlice';
 import Select, { type SelectRef } from '../../components/Select';
 import type { Sector } from '../../types/exam';
+import { splitPart } from '../../helpers/convertTextToExample';
 
 const cx = classNames.bind(styles);
 const template =
@@ -39,7 +40,7 @@ function CreateExample() {
     const curentPart = useAppSelector((state) => state.contest.currentPart);
     const curentQuestion = useAppSelector((state) => state.contest.currentQuestion);
     const [sectorList, setSectorList] = useState<Sector[]>([]);
-
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
     const [textarea, setTextarea] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
@@ -116,6 +117,99 @@ function CreateExample() {
             dispatch(changePart(0));
         }
     }, [curentPart, curentQuestion, dispatch, textarea]);
+    function getPartAndQuestion(text: string, caretPos: number) {
+        const textParts = splitPart(text);
+
+        let accPos = 0;
+
+        for (let p = 0; p < textParts.length; p++) {
+            const partText = textParts[p];
+            const partStart = accPos;
+            const partEnd = accPos + partText.length;
+
+            if (caretPos >= partStart && caretPos <= partEnd) {
+                // tìm question trong part này
+                const questions = partText.split(/(\n{2,})/).filter((d) => d.trim() !== '');
+
+                let qAcc = partStart;
+
+                for (let q = 0; q < questions.length; q++) {
+                    const qText = questions[q];
+                    const qStart = qAcc;
+                    const qEnd = qAcc + qText.length;
+
+                    if (caretPos >= qStart && caretPos <= qEnd) {
+                        return { part: p, question: q };
+                    }
+
+                    qAcc += qText.length + 2; // \n\n
+                }
+
+                return { part: p, question: 0 };
+            }
+
+            accPos += partText.length + 1; // \n giữa các part
+        }
+
+        return { part: 0, question: 0 };
+    }
+    const handleCursorChange = () => {
+        const textarea = textareaRef.current;
+        if (!textarea) return;
+        const pos = textarea.selectionStart;
+        const { part, question } = getPartAndQuestion(textarea.value, pos);
+        dispatch(changePart(part));
+        dispatch(changeQuestion(question));
+    };
+
+    const updateTextArea = (curentPart: number, curentQuestion: number) => {
+        if (!textareaRef.current) return;
+        const textarea = textareaRef.current;
+        if (!textarea.value) return;
+        const textParts = splitPart(textarea.value);
+        let pos = 0;
+        const currentPartText = textParts[curentPart] || '';
+        for (let i = 0; i < curentPart; i++) {
+            pos += textParts[i].length + 1; // +1 cho ký tự \n
+        }
+        const partTextQuestions = currentPartText.split(/(\n{2,})/).filter((dong) => dong.trim() !== '');
+        for (let i = 0; i < curentQuestion; i++) {
+            pos += partTextQuestions[i].length + 2; // +2 cho ký tự \n\n
+        }
+        textarea.blur();
+        textarea.setSelectionRange(pos, pos);
+        textarea.focus();
+        const div = document.createElement('div');
+        const style = getComputedStyle(textarea);
+
+        // copy style quan trọng
+        div.style.position = 'absolute';
+        div.style.visibility = 'hidden';
+        div.style.whiteSpace = 'pre-wrap';
+        div.style.wordWrap = 'break-word';
+        div.style.font = style.font;
+        div.style.lineHeight = style.lineHeight;
+        div.style.width = textarea.clientWidth + 'px';
+        div.style.padding = style.padding;
+
+        // text trước caret
+        div.textContent = textarea.value.slice(0, pos);
+
+        // marker caret
+        const span = document.createElement('span');
+        span.textContent = '.';
+        div.appendChild(span);
+
+        document.body.appendChild(div);
+
+        const caretTop = span.offsetTop;
+
+        document.body.removeChild(div);
+
+        // scroll để caret nằm ở đầu viewport
+        textarea.scrollTop = caretTop;
+    };
+
     const question = partQuestions[curentPart]?.questions[curentQuestion];
     if (isMobile) {
         return (
@@ -267,7 +361,9 @@ function CreateExample() {
                 </div>
                 <div className={cx('core')}>
                     <textarea
+                        ref={textareaRef}
                         spellCheck={false}
+                        onClick={handleCursorChange}
                         value={textarea}
                         onChange={(e) => {
                             setTextarea(e.target.value);
@@ -296,7 +392,10 @@ function CreateExample() {
                             return (
                                 <Button
                                     key={index}
-                                    onClick={() => dispatch(changePart(index))}
+                                    onClick={() => {
+                                        dispatch(changePart(index));
+                                        updateTextArea(index, curentQuestion);
+                                    }}
                                     variant={curentPart === index ? 'primary' : 'outline'}
                                     size="small"
                                     className={cx('button')}
@@ -317,7 +416,10 @@ function CreateExample() {
                                     return (
                                         <Button
                                             key={index}
-                                            onClick={() => dispatch(changeQuestion(index))}
+                                            onClick={() => {
+                                                dispatch(changeQuestion(index));
+                                                updateTextArea(curentPart, index);
+                                            }}
                                             variant={curentQuestion === index ? 'primary' : 'outline'}
                                             size="small"
                                             className={cx('button')}

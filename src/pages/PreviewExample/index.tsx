@@ -125,22 +125,24 @@ function PreviewExample() {
                             {myScore?.ranking ? `No.${myScore.ranking}` : 'Không có xếp hạng'}
                         </div>
                     </div>
-                    {score.length > 0 &&
-                        score.map((item, index) => {
-                            return (
-                                <ItemRank
-                                    key={index}
-                                    userId={item.user_id}
-                                    point={item.score}
-                                    userInfo={item.user}
-                                    rank={index + 1}
-                                >
-                                    <Link to={routes.profile(`${getUserByEmail(item.user.email)}!${item.user_id}`)}>
-                                        {item.user.name}
-                                    </Link>
-                                </ItemRank>
-                            );
-                        })}
+                    <div className={cx('list-rank')}>
+                        {score.length > 0 &&
+                            score.map((item, index) => {
+                                return (
+                                    <ItemRank
+                                        key={index}
+                                        userId={item.user_id}
+                                        point={item.score}
+                                        userInfo={item.user}
+                                        rank={index + 1}
+                                    >
+                                        <Link to={routes.profile(`${getUserByEmail(item.user.email)}!${item.user_id}`)}>
+                                            {item.user.name}
+                                        </Link>
+                                    </ItemRank>
+                                );
+                            })}
+                    </div>
                 </div>
             </div>
         </div>

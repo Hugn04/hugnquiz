@@ -52,6 +52,9 @@
     display: flex;
 }
 .rank {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     color: white;
     flex: 3;
     .avatar {
@@ -77,6 +80,10 @@
             align-items: center;
         }
     }
+}
+.list-rank {
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 @media only screen and (max-width: 600px) {

@@ -4,22 +4,9 @@ import { useEffect, useState } from 'react';
 import { faCircleQuestion, faClipboardQuestion, faHeart, faHome } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './SideBar.module.scss';
-import NavList from '../NavList';
+import NavList, { type MenuItem } from '../NavList';
 import routes from '../../../config/routes';
-import type { IconProp } from '@fortawesome/fontawesome-svg-core';
 const cx = classNames.bind(styles);
-
-type MenuItem = {
-    title: string;
-    icon?: IconProp;
-    event?: {
-        to?: string;
-        href?: string;
-        onClick?: () => void;
-    };
-    active?: boolean;
-    spacer?: boolean;
-};
 
 const initMenu: MenuItem[] = [
     {

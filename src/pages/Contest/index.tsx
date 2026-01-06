@@ -19,26 +19,33 @@ import Avatar from '../../components/Avatar';
 import type { Contest, Example } from '../../types/exam';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../redux/hooks';
-import { changePart, changeQuestion, setPartQuestions } from '../../redux/slices/contestSlice';
+import { changePart, changeQuestion, setPartQuestions, setTimeSkipQuestion } from '../../redux/slices/contestSlice';
 import PopupFinally from './components/PopupFinally';
 import extractExample from '../../helpers/extractExample';
+import Select from '../../components/Select';
 const cx = classNames.bind(styles);
-
+const delayOptions = [
+    { name: 'Không tự động', value: 0 },
+    { name: '1s', value: 1 },
+    { name: '2s', value: 2 },
+];
 function ContestPage() {
     const { state } = useLocation();
     const [isLoading, setIsloading] = useState(true);
-    const { delayNext, isQuestionShuffle, isAnswerShuffle, test } = state
+    const { isQuestionShuffle, isAnswerShuffle, test } = state
         ? state
-        : { delayNext: 1, isQuestionShuffle: false, isAnswerShuffle: false };
+        : { isQuestionShuffle: false, isAnswerShuffle: false };
     const dispatch = useDispatch();
     const partQuestions = useAppSelector((state) => state.contest.partQuestions);
     const result = useAppSelector((state) => state.contest.result);
-    const [timeSkipQuestion, setTimeSkipQuestion] = useState(state ? +delayNext : 1);
     const curentPart = useAppSelector((state) => state.contest.currentPart);
-    const curentQuestion = useAppSelector((state) => state.contest.currentQuestion);
+    const currentQuestion = useAppSelector((state) => state.contest.currentQuestion);
+    const delayNext = useAppSelector((state) => state.contest.timeSkipQuestion);
     const [example, setExample] = useState<Example>();
     const [searchParams] = useSearchParams();
     const { subject } = useParams();
+    const buttonRefs = useRef<(HTMLButtonElement | HTMLAnchorElement)[]>([]);
+    const partRefs = useRef<(HTMLButtonElement | HTMLAnchorElement)[]>([]);
     // const popupTimeOutRef = useRef();
     const timeRef = useRef<TimeRef>(null);
     // const [endExample, setEndExample] = useState(false);
@@ -48,7 +55,6 @@ function ContestPage() {
     const numQuestion = useAppSelector((state) => state.contest.numQuestion);
     const retryExampleFalse = () => {
         dispatch(setPartQuestions(getExampleRetry(partQuestions)));
-        // const newListExample = getExampleRetry(partQuestions);
     };
 
     const handleGetExample = async () => {
@@ -130,8 +136,24 @@ function ContestPage() {
             window.removeEventListener('beforeunload', handleBeforeUnload);
             window.removeEventListener('unload', handleUnload);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        const el = buttonRefs.current[currentQuestion];
+        el?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'center',
+        });
+    }, [currentQuestion]);
+    useEffect(() => {
+        const el = partRefs.current[curentPart];
+        el?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'center',
+        });
+    }, [curentPart]);
     if (isLoading) {
         return <div></div>;
     }
@@ -180,16 +202,22 @@ function ContestPage() {
                     </div>
                     <div className={cx('other')}>
                         <div className={cx('time')}>
-                            <label>Tự động chuyển câu:</label>
-                            <select
-                                value={timeSkipQuestion}
-                                onChange={(e) => setTimeSkipQuestion(parseInt(e.target.value))}
-                            >
-                                <option value={0}>Tắt</option>
-                                <option value={1}>1s</option>
-                                <option value={2}>2s</option>
-                                <option value={3}>3s</option>
-                            </select>
+                            <Select<{ name: string; value: number }>
+                                items={delayOptions}
+                                defaultValue={delayOptions[delayNext]}
+                                title="Tự động chuyển câu"
+                                render={(d) => {
+                                    return d.name;
+                                }}
+                                onSelect={(e) => {
+                                    if (e) dispatch(setTimeSkipQuestion(e.value));
+                                }}
+                                filter={(items, search) =>
+                                    items.filter((i) => i.name.toLowerCase().includes(search.toLowerCase()))
+                                }
+                                placeholder="Chuyển câu hỏi sau"
+                                // onChange={(e) => setTimeSkipQuestion(parseInt(e.target.value))}
+                            ></Select>
                         </div>
                         <hr></hr>
                         <div className={cx('other-group')}>
@@ -245,6 +273,9 @@ function ContestPage() {
                             return (
                                 <Button
                                     key={index}
+                                    ref={(el) => {
+                                        if (el) partRefs.current[index] = el;
+                                    }}
                                     onClick={() => {
                                         dispatch(changePart(index));
                                     }}
@@ -288,10 +319,17 @@ function ContestPage() {
                         const classes = cx('button', {
                             wrong: !isCorrect && item.choose !== undefined,
                             correct: isCorrect,
-                            active: index === curentQuestion,
+                            active: index === currentQuestion,
                         });
                         return (
-                            <Button key={index} onClick={() => dispatch(changeQuestion(index))} className={classes}>
+                            <Button
+                                key={index}
+                                ref={(el) => {
+                                    if (el) buttonRefs.current[index] = el;
+                                }}
+                                onClick={() => dispatch(changeQuestion(index))}
+                                className={classes}
+                            >
                                 {index + 1}
                             </Button>
                         );

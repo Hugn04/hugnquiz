@@ -77,6 +77,8 @@ const contestSlice = createSlice({
                 }
                 if (type === 'prev') {
                     if (state.currentQuestion <= 0) {
+                        state.currentQuestion = state.partQuestions[state.currentPart - 1].questions.length - 1;
+
                         state.currentPart -= 1;
                     } else {
                         state.currentQuestion -= 1;
@@ -102,6 +104,9 @@ const contestSlice = createSlice({
             state.partQuestions[state.currentPart].questions.splice(state.currentQuestion, 1);
             if (state.currentQuestion !== 0) state.currentQuestion -= 1;
         },
+        setTimeSkipQuestion: (state, action: PayloadAction<number>) => {
+            state.timeSkipQuestion = action.payload;
+        },
     },
 });
 
@@ -114,5 +119,6 @@ export const {
     setCurrentQuestion,
     addQuestion,
     deleteCurrentQuestion,
+    setTimeSkipQuestion,
 } = contestSlice.actions;
 export default contestSlice.reducer;
