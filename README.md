@@ -1,73 +1,73 @@
-# React + TypeScript + Vite
+# HugnQuiz
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple frontend for a quiz application built with React, TypeScript and Vite.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Frontend project scaffolded with Vite and TypeScript.
+- Includes authentication, protected/admin routes, and realtime support (socket).
+- Organized into components, contexts, helpers and pages.
 
-## React Compiler
+## Quick Start
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Prerequisites: Node.js (16+) and npm or yarn.
 
-## Expanding the ESLint configuration
+Install dependencies:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Run development server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Preview the production build:
+
+```bash
+npm run preview
+```
+
+If any of these scripts are missing, check the `package.json` scripts section.
+
+## Project Structure (selected)
+
+- `src/components` — UI and feature components (Login, Avatar, Inputs, etc.)
+- `src/context` — React contexts (AuthContext, SocketContext, GlobalContext)
+- `src/helpers` — utility functions used across the app
+- `src/pages` — top-level page views and route targets
+- `public` — static assets and manifest
+
+## Business Logic
+
+- Auth: Users register, login, verify email and reset/change password. Authentication state lives in `src/context/AuthContext.tsx` and `src/providers/AuthProvider.tsx`.
+- Quizzes/Examples: The app stores and displays "examples" (quiz items). Users can create, edit, preview and favorite examples. Helpers like `src/helpers/convertExampleToText.ts` and `src/helpers/convertTextToExample.ts` handle example serialization.
+- Exam Flow: Users join or start contests/exams via pages under `src/pages/Contest` and `src/pages/ExamQuestions`. The flow includes loading questions, selecting answers, timing, and submitting results to the backend via `src/utils/request.ts`.
+- Real-time: Live contest updates and multiplayer features use sockets through `src/context/SocketContext.tsx` and `src/utils/socket.ts`.
+- Scoring & Ranking: After submission the server computes scores; frontend shows rankings in components under `src/components/ItemRank` and pages under `src/pages`.
+- Admin: Admin routes and controls (create/edit/delete examples, manage contests) are protected by role checks (`src/helpers/roleController.ts`).
+- State & Data: Local UI state uses React state/hooks; global app state uses contexts and Redux (`src/redux`). API calls use `src/utils/request.ts` and are configured in `src/config`.
+
+## Configuration
+
+- Environment variables and app configuration are read from `src/config` and standard `.env` files.
+
+## Contributing
+
+- Open issues or submit pull requests. Keep changes focused and add tests where appropriate.
+
+## License
+
+See the `package.json` file for licensing information.
+
+---
+
+This README is a concise overview of the frontend. For backend and API details, see the server repository in the workspace (if present).
