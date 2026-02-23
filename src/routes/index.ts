@@ -19,7 +19,7 @@ import ChangePassword from '../pages/ChangePassword';
 import PreviewExample from '../pages/PreviewExample';
 import ContestPage from '../pages/Contest';
 import CreateExample from '../pages/CreateExample';
-// import MessagePage from '../pages/MessagePage';
+import MessagePage from '../pages/MessagePage';
 
 export type RouteType = {
     path: string;
@@ -49,7 +49,7 @@ const privateRoutes: RouteType[] = [
     { path: routesConfig.profile(), layout: HomeLayout, component: Profile, props: { sideBarMini: true } },
     { path: routesConfig.changePassword, component: ChangePassword, layout: Account },
     { path: routesConfig.favorite, component: MyFavorite },
-    // { path: routesConfig.message, component: MessagePage, props: { noPadding: true } },
+    { path: routesConfig.message, component: MessagePage, props: { noPadding: true } },
     { path: routesConfig.createExample, component: CreateExample, props: { sideBarMini: true } },
 ];
 

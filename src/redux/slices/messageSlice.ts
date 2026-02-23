@@ -5,8 +5,12 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 // Định nghĩa kiểu cho một message
 interface MessageItem {
     _id?: string;
-    text?: string;
-    senderId?: string;
+    content?: string;
+    senderId: number;
+    sender: {
+        id: number;
+        avatar?: string;
+    };
     createdAt?: string;
     // thêm các trường khác nếu cần
 }

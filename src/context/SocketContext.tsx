@@ -1,6 +1,6 @@
 // context/SocketProvider.tsx
-import { createContext, useEffect, useState, type ReactNode } from 'react';
-import { socket, disconnectSocket } from '../utils/socket';
+import { createContext } from 'react';
+import { socket } from '../utils/socket';
 
 // Định nghĩa type cho giá trị context
 interface SocketContextType {
@@ -9,24 +9,4 @@ interface SocketContextType {
 }
 
 // Khởi tạo context với type
-const SocketContext = createContext<SocketContextType | undefined>(undefined);
-
-// Props cho SocketProvider
-interface SocketProviderProps {
-    children: ReactNode;
-}
-
-export const SocketProvider = ({ children }: SocketProviderProps) => {
-    const [isConnected, setIsConnected] = useState(false);
-
-    useEffect(() => {
-        socket.on('connect', () => setIsConnected(true));
-        socket.on('disconnect', () => setIsConnected(false));
-
-        return () => {
-            disconnectSocket();
-        };
-    }, []);
-
-    return <SocketContext.Provider value={{ socket, isConnected }}>{children}</SocketContext.Provider>;
-};
+export const SocketContext = createContext<SocketContextType | undefined>(undefined);

@@ -1,0 +1,71 @@
+.wrapper {
+    height: calc(100vh - 70px);
+    color: var(--text-color);
+}
+.header {
+    width: 100%;
+    height: 100px;
+    background: var(--background-color);
+    border-bottom: 1px solid var(--color-disable);
+}
+.title {
+    display: flex;
+    justify-content: left;
+    padding: 0 16px;
+    align-items: center;
+    height: 50px;
+    font-weight: 600;
+    font-size: 2.4rem;
+}
+.search {
+    display: flex;
+    padding: 0 16px;
+    height: 60px;
+    gap: 10px;
+    .input {
+        // background-color: var(--color-disable);
+        // border-radius: 50px;
+        flex: 1;
+        height: 36px;
+        padding: 0 16px;
+    }
+    .filter {
+        width: 150px;
+        height: 36px;
+        padding: 0 8px;
+    }
+}
+
+.content {
+    height: calc(100% - 100px);
+    width: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+.conversation_item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+    border-radius: 16px;
+    padding: 16px 8px;
+    &.active {
+        background-color: var(--theme-color);
+    }
+    &:hover {
+        background-color: var(--theme-color);
+    }
+}
+.avatar {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.name {
+    margin-left: 8px;
+}

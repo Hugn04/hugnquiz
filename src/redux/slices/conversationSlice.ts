@@ -6,6 +6,7 @@ interface Conversation {
     _id: string | null;
     name?: string;
     isGroup?: boolean;
+    image?: string;
 }
 
 interface ConversationState {
