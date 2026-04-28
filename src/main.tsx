@@ -10,14 +10,16 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { SocketProvider } from './providers/SocketProvider.tsx';
 
 createRoot(document.getElementById('root')!).render(
-    // <StrictMode>
-    <GlobalStyle>
-        <SocketProvider>
-            <Provider store={store}>
-                <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-                    <App />
-                </GoogleOAuthProvider>
-            </Provider>
-        </SocketProvider>
-    </GlobalStyle>,
+    <StrictMode>
+        <GlobalStyle>
+            <SocketProvider>
+                <Provider store={store}>
+                    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+                        <App />
+                    </GoogleOAuthProvider>
+                </Provider>
+            </SocketProvider>
+        </GlobalStyle>
+        ,
+    </StrictMode>,
 );
