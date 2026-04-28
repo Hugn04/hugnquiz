@@ -8,6 +8,7 @@ import NotFound404 from './404.png';
 import logo2 from './logo2.png';
 import frame from './frame.png';
 import notCard from './notcard.png';
+import imageMess from './mess-icon.png';
 
 const images = {
     logo,
@@ -19,6 +20,7 @@ const images = {
     logo2,
     frame,
     notCard,
+    imageMess,
 };
 
 export default images;

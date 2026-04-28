@@ -190,7 +190,20 @@ function PageExample({ url = 'get-favorite' }: PageExampleProps) {
                 ) : listMyExample.length === 0 ? (
                     <div className={cx('not-found')}>
                         <img src={images.notCard} alt="" />
-                        <span>Không có đề thi nào</span>
+                        <p className={cx('not-found-text')}>
+                            Nếu không có đề thi nào, vui lòng liên hệ với chúng tôi để được hỗ trợ thêm
+                        </p>
+                        <Button
+                            className={cx('btn-mess')}
+                            variant="primary"
+                            href="https://messenger.com/t/61560210548651"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Liên hệ Messenger:
+                            <img className={cx('icon-mess')} src={images.imageMess} alt="Hỗ trợ" />
+                        </Button>
+                        {/* <span>Không có đề thi nào</span> */}
                     </div>
                 ) : (
                     <>
